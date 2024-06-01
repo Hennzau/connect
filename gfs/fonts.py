@@ -1,6 +1,8 @@
 import pygame
 
-from image import Image
+from gfs.image import Image
+
+pygame.font.init()
 
 MOTO_MANGUCODE_50 = pygame.font.Font("assets/fonts/MotomangucodeBold-3zde3.ttf", 50)
 BULLET_TRACE_30 = pygame.font.Font("assets/fonts/BulletTrace7-rppO.ttf", 30)

@@ -11,3 +11,12 @@ class Image:
         self.width = py_image.get_width()
         self.height = py_image.get_height()
         self.py_image = py_image
+
+    def draw_image(self, image, x, y):
+        self.py_image.blit(image.py_image, (x, y))
+
+    def draw_rect(self, color, rect):
+        self.py_image.fill(color, rect)
+
+    def fill(self, color):
+        self.py_image.fill(color)

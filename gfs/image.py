@@ -20,3 +20,6 @@ class Image:
 
     def fill(self, color):
         self.py_image.fill(color)
+
+    def get_rect(self):
+        return self.py_image.get_rect()

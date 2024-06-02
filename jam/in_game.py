@@ -1,5 +1,7 @@
-from gfs.fonts import MOTO_MANGUCODE_50, render_font
-from gfs.pallet import IVORY, DARKBLUE
+from gfs.gui.interface import Interface
+from gfs.gui.button import Button
+
+from gfs.pallet import DARKBLUE
 
 from jam.states import MAIN_MENU
 
@@ -9,20 +11,24 @@ class InGame:
         self.surface_configuration = (width, height)
         self.next_state = None
 
-        self.title = render_font(MOTO_MANGUCODE_50, "Welcome to the Game", IVORY)
+        self.interface = Interface()
+        self.interface.add_gui(Button("Back to main menu", (200, 300), self.main_menu))
 
-    def keyboard_input(self, event):
+    def main_menu(self):
         self.next_state = MAIN_MENU
 
+    def keyboard_input(self, event):
+        self.interface.keyboard_input(event)
+
     def mouse_input(self, event):
-        pass
+        self.interface.mouse_input(event)
 
     def mouse_motion(self, event):
-        pass
+        self.interface.mouse_motion(event)
 
     def update(self):
-        pass
+        self.interface.update()
 
     def render(self, surface):
         surface.fill(DARKBLUE)
-        surface.draw_image(self.title, 100, 100)
+        self.interface.render(surface)

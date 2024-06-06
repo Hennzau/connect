@@ -13,7 +13,7 @@ class MainMenu:
         self.next_state = None
 
         self.interface = Interface()
-        self.interface.add_gui(Button("Go to game", (0, 0), self.in_game))
+        self.interface.add_gui(Button(MOTO_MANGUCODE_50, "Go to game", (0, 0), self.in_game))
 
     def in_game(self):
         self.next_state = IN_GAME

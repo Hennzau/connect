@@ -32,3 +32,6 @@ class Surface:
 
     def fill(self, color):
         self.py_surface.fill(color)
+
+    def blits(self, blit_list):
+        self.py_surface.blits(blit_list)

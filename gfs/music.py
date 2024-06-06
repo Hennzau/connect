@@ -15,3 +15,6 @@ class Music:
             sound.set_volume(2)
 
             self.background.play(sound)
+
+    def stop(self):
+        self.background.stop()

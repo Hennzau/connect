@@ -1,6 +1,7 @@
 from gfs.image import Image
-
-from jam.level.tiles import TILE_SIZE
+import gfs.pallet
+from jam.level.tiles import TILE_SIZE,TILE_GREEN, TILE_GREY
+import pygame
 
 
 class Level:
@@ -35,4 +36,11 @@ class Level:
         pass
 
     def build_image(self):
-        pass
+        for i in range (self.grid.width):
+            for j in range (self.grid.height):
+                type = self.grid.get_tile(i,j)
+                if type == TILE_GREY:
+                    self.image.draw_rect(gfs.pallet.DARKGREY,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+                if type == TILE_GREEN:
+                    self.image.draw_rect(gfs.pallet.GREEN,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+

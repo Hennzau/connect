@@ -2,7 +2,8 @@ from gfs.image import Image
 
 from jam.main_menu import MainMenu
 from jam.in_game import InGame
-from jam.states import MAIN_MENU, OPTION_MENU, IN_GAME
+from jam.option_menu import OptionMenu
+from jam.states import MAIN_MENU
 
 
 class Game:
@@ -11,11 +12,11 @@ class Game:
 
         self.state = [
             MainMenu(width, height),
-            None,
+            OptionMenu(width, height),
             InGame(width, height)
         ]
 
-        self.current_state = 0
+        self.current_state = MAIN_MENU
 
     def next_state(self):
         next_state = self.state[self.current_state].next_state

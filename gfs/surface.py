@@ -27,6 +27,12 @@ class Surface:
     def draw_image(self, image, x, y):
         self.py_surface.blit(image.py_image, (x, y))
 
+    def get_width(self):
+        return self.width
+
+    def get_height(self):
+        return self.height
+
     def draw_rect(self, color, rect):
         self.py_surface.fill(color, rect)
 

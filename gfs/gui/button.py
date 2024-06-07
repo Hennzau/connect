@@ -4,7 +4,7 @@ from gfs.image import Image
 from gfs.fonts import render_font
 from gfs.surface import Surface
 
-from gfs.pallet import IVORY, DARKBLUE, DARKGREY
+from gfs.pallet import IVORY, DARKBLUE, DARKGREY, VOLKSWAGEN_TAUPE
 
 
 class Button:
@@ -15,17 +15,19 @@ class Button:
 
         self.over = False
 
-        self.text = render_font(font, text, IVORY)
-        self.rect = self.text.get_rect()
+        self.over_text = render_font(font, text, DARKBLUE)
+        self.normal_text = render_font(font, text, DARKGREY)
+
+        self.rect = self.normal_text.get_rect()
         self.rect = self.rect.move(pos[0], pos[1])
 
         self.over_image = Image(self.rect.width, self.rect.height)
-        self.over_image.fill(DARKBLUE)
-        self.over_image.draw_image(self.text, 0, 0)
+        self.over_image.fill(IVORY)
+        self.over_image.draw_image(self.over_text, 0, 0)
 
         self.normal_image = Image(self.rect.width, self.rect.height)
-        self.normal_image.fill(DARKGREY)
-        self.normal_image.draw_image(self.text, 0, 0)
+        self.normal_image.fill(IVORY)
+        self.normal_image.draw_image(self.normal_text, 0, 0)
 
     def keyboard_input(self, event):
         pass
@@ -39,7 +41,8 @@ class Button:
         self.over = self.rect.collidepoint(event.pos)
 
     def update(self):
-        pass
+        self.rect = self.normal_text.get_rect()
+        self.rect = self.rect.move(self.pos[0], self.pos[1])
 
     def render(self, surface):
         if self.over:

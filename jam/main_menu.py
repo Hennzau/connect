@@ -15,6 +15,7 @@ class MainMenu:
         self.interface = Interface()
 
         self.game_name = render_font(PLAYGROUND_100, "Expand", DARKBLUE)
+
         game_button = Button(PLAYGROUND_50, "Go to game", (0, 0), self.in_game)
 
         x = (width - game_button.normal_image.get_width()) // 2
@@ -29,14 +30,14 @@ class MainMenu:
         x = (width - option_button.normal_image.get_width()) // 2
         y = height // 3 - option_button.normal_image.get_height() // 2
 
-        option_button.pos = (x, y + self.game_name.get_height() * 3)
+        option_button.pos = (x, y + self.game_name.get_height() * 2.7)
 
         self.interface.add_gui(option_button)
 
     def in_game(self):
         self.next_state = IN_GAME
 
-    def option_menu (self):
+    def option_menu(self):
         self.next_state = OPTION_MENU
 
     def keyboard_input(self, event):

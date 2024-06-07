@@ -6,7 +6,7 @@ from gfs.gui.button import Button
 
 from gfs.fonts import MOTO_MANGUCODE_50
 from gfs.pallet import DARKBLUE, RED, IVORY
-from gfs.image import Image
+from gfs.images import SELECTOR_IMAGE
 
 from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
@@ -67,8 +67,14 @@ class InGame:
     def mouse_input(self, event):
         self.interface.mouse_input(event)
 
+        if self.current_level is not None:
+            self.levels[self.current_level].mouse_input(event)
+
     def mouse_motion(self, event):
         self.interface.mouse_motion(event)
+
+        if self.current_level is not None:
+            self.levels[self.current_level].mouse_motion(event)
 
     def update(self):
         self.interface.update()
@@ -93,6 +99,13 @@ class InGame:
 
             for player in current_level.players:
                 surface.draw_image(player.image, x + player.grid_pos[0] * TILE_SIZE, y + player.grid_pos[1] * TILE_SIZE)
+
+            # draw selector
+
+            x = current_level.selector_pos[0] * TILE_SIZE
+            y = current_level.selector_pos[1] * TILE_SIZE
+
+            surface.draw_image(SELECTOR_IMAGE, x, y)
 
         self.interface.render(surface)
         self.sprites.render(surface)

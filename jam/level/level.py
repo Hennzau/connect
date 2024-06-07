@@ -6,12 +6,13 @@ from jam.level.tiles import TILE_SIZE
 class Level:
     def __init__(self, grid, players):
         self.image = Image(grid.width * TILE_SIZE, grid.height * TILE_SIZE)
-        self.selection = Image(TILE_SIZE, TILE_SIZE)
         self.grid = grid
 
         self.players = players
         self.current_player = None
         self.current_player = 0
+
+        self.selector_pos = (0, 0)
 
         self.build_image()
 
@@ -26,7 +27,7 @@ class Level:
         x //= TILE_SIZE
         y //= TILE_SIZE
 
-
+        self.selector_pos = (x, y)
 
     def mouse_input(self, event):
         pass

@@ -41,13 +41,6 @@ class InGame:
         # tests
 
         self.sprites = Sprites()
-        running = Image()
-        running.load_from_file("assets/images/Run.png")
-        animation = (8, running)
-
-        self.sprites.add_sprite("main", AnimatedSprite(0, 0, 300, 300, {"running": animation}, 5))
-        self.sprites.animate_sprite("main", "running")
-
         self.particle_system = ParticleSystem()
 
         # end tests
@@ -73,15 +66,6 @@ class InGame:
 
     def mouse_input(self, event):
         self.interface.mouse_input(event)
-
-        particles = []
-        for i in range(100):
-            particles.append(PointParticle((event.pos[0], event.pos[1]),
-                                           (np.random.randint(100) * np.sin((2 * 3.14 * i) / 100),
-                                            np.random.randint(100) * np.cos((2 * 3.14 * i) / 100)),
-                                           np.random.randint(150) / 100))
-
-        self.particle_system.add("RED_POINT_5", particles)
 
     def mouse_motion(self, event):
         self.interface.mouse_motion(event)

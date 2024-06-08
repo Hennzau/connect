@@ -136,8 +136,8 @@ class InGame:
         self.current_level = None
 
         # tests
-        grid = Grid(10, 10)
-        self.levels.append(Level(grid, [Player(grid, RABBIT_TYPE)]))
+        grid = Grid(20, 10)
+        self.levels.append(Level(grid, [Player(grid, RABBIT_TYPE,np.array([0,0])),Player(grid, ROBOT_TYPE,np.array([0,4]))]))
         self.current_level = 0
         self.selector_pos = (0, 0)
 
@@ -156,7 +156,23 @@ class InGame:
         self.interface.mouse_input(event)
 
         if self.current_level is not None:
-            self.levels[self.current_level].mouse_input(event)
+            level=self.levels[self.current_level]
+            
+            level.mouse_input(event)
+            #regarder le joueur actuel s'il y en a un, regarder sa puissance, récupérer les coordonnées du selector, détercter le clic gauche, modifier la grille et rebuild l'image du level et enlever du power
+            if level.current_player is not None:
+                player=level.players[level.current_player]
+                player_type = player.type
+                power = player.power
+                if self.selector_pos is not None:
+                    x=int(self.selector_pos[0])
+                    y=int(self.selector_pos[1])
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
+                        if power>0 and level.grid.get_tile(x,y)!=player_type:
+                            level.grid.set_tile(x,y,player_type)
+                            level.build_image()
+                            player.power=power-1
+
 
         self.editor.mouse_input(event)
 

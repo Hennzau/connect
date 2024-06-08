@@ -6,33 +6,39 @@ from gfs.image import Image
 from jam.level.tiles import TILE_SIZE
 from jam.level.grid import Grid
 
-RABBIT_TYPE=0
-ROBOT_TYPE=1
+RABBIT_TYPE = 0
+ROBOT_TYPE = 1
+
 
 class Player:
-    def __init__(self,grid,type):
+    def __init__(self, grid, type):
         self.image = Image(TILE_SIZE, TILE_SIZE)
         self.image.fill((255, 0, 0))
-        self.grid=grid
-        self.type=type
+        self.grid = grid
+        self.type = type
 
         self.grid_pos = np.array([0, 0])
 
-        self.render_pos = np.array([0,0], dtype=float)
-        self.velocity = np.array([0,0], dtype=float)
-    def move_up (self):
-        if self.grid_pos[1]-1>=0 and self.type==self.grid[self.grid_pos[0],self.grid_pos[1]-1]:
-            self.grid_pos[1] -= 1
-    def move_down (self):
-        if self.grid_pos[1]+1<self.grid.height and self.type==self.grid[self.grid_pos[0],self.grid_pos[1]+1]:
-            self.grid_pos[1] += 1
-    def move_left (self):
-        if self.grid_pos[0]-1>=0 and self.type==self.grid[self.grid_pos[0]-1,self.grid_pos[1]]:
-            self.grid_pos[0] -= 1
-    def move_right (self):
-        if self.grid_pos[0]+1<self.grid.width and self.type==self.grid[self.grid_pos[0]+1,self.grid_pos[1]]:
-            self.grid_pos[0] += 1
+        self.render_pos = np.array([0, 0], dtype=float)
+        self.velocity = np.array([0, 0], dtype=float)
 
+    def move_up(self):
+        if self.grid_pos[1] - 1 >= 0 and self.type == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
+            self.grid_pos[1] -= 1
+
+    def move_down(self):
+        if self.grid_pos[1] + 1 < self.grid.height and self.type == self.grid.get_tile(self.grid_pos[0],
+                                                                                       self.grid_pos[1] + 1):
+            self.grid_pos[1] += 1
+
+    def move_left(self):
+        if self.grid_pos[0] - 1 >= 0 and self.type == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
+            self.grid_pos[0] -= 1
+
+    def move_right(self):
+        if self.grid_pos[0] + 1 < self.grid.width and self.type == self.grid.get_tile(
+                self.grid_pos[0] + 1, self.grid_pos[1]):
+            self.grid_pos[0] += 1
 
     def keyboard_input(self, event):
         if event.type == pygame.KEYDOWN:
@@ -46,5 +52,5 @@ class Player:
                 self.move_right()
 
     def update(self):
-        self.render_pos+=self.velocity*(1/60)
-        self.velocity= (self.grid_pos-self.render_pos)*10
+        self.render_pos += self.velocity * (1 / 60)
+        self.velocity = (self.grid_pos - self.render_pos) * 10

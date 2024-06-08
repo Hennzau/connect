@@ -18,7 +18,7 @@ from gfs.effects.point_particle import PointParticle
 
 from jam.level.level import Level
 from jam.level.grid import Grid
-from jam.level.player import Player
+from jam.level.player import Player, RABBIT_TYPE, ROBOT_TYPE
 from jam.level.tiles import TILE_SIZE
 
 
@@ -52,7 +52,7 @@ class InGame:
 
         # tests
         grid=Grid(10,10)
-        self.levels.append(Level(grid, [Player(grid)]))
+        self.levels.append(Level(grid, [Player(grid, RABBIT_TYPE)]))
         self.current_level = 0
 
     def main_menu(self):

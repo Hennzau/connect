@@ -3,6 +3,7 @@ import gfs.pallet
 from jam.level.tiles import TILE_SIZE,TILE_GREEN, TILE_GREY, TILE_WALL
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 import pygame
+from gfs.images import GRASS_IMAGE, DIRT_IMAGE, ROAD_IMAGE, WATER_IMAGE
 
 
 class Level:
@@ -46,11 +47,11 @@ class Level:
             for j in range (self.grid.height):
                 type = self.grid.get_tile(i,j)
                 if type == TILE_GREY:
-                    self.image.draw_rect(gfs.pallet.DARKGREY,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+                    self.image.draw_image(ROAD_IMAGE,i*TILE_SIZE,j*TILE_SIZE)
                 if type == TILE_GREEN:
-                    self.image.draw_rect(gfs.pallet.GREEN,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+                    self.image.draw_image(GRASS_IMAGE,i*TILE_SIZE,j*TILE_SIZE)
                 if type == TILE_WALL:
-                    self.image.draw_rect(gfs.pallet.VOLKSWAGEN_TAUPE,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+                    self.image.draw_image(WATER_IMAGE,i*TILE_SIZE,j*TILE_SIZE)
                 points=self.grid.get_points(i,j)
                 if points>0:
                     self.power_image = render_font(PLAYGROUND_20,str(int(points)),gfs.pallet.IVORY)

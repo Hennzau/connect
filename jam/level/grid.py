@@ -18,8 +18,9 @@ class Grid:
         self.tiles[robot_start[0], robot_start[1]] = TILE_ROAD
 
         self.points = np.zeros((width, height))
-
         self.victory_points = np.zeros((width, height))
+
+        # sauvegarder self.tiles, rabbit_start, robot_start, self.points, self.victory_points
 
     def get_tile(self, x, y):
         return self.tiles[x, y]

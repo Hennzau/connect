@@ -8,7 +8,7 @@ from gfs.pallet import IVORY, DARKBLUE, DARKGREY
 
 
 class CheckBox:
-    def __init__(self, font, text, pos, check_function, uncheck_function):
+    def __init__(self, font, text, pos, check_function, uncheck_function, normal_color=DARKGREY, over_color=DARKBLUE):
         self.text = text
 
         self.check_function = check_function
@@ -19,7 +19,10 @@ class CheckBox:
         self.over = False
         self.check = False
 
-        self.text = render_font(font, text, DARKBLUE)
+        self.over_color=over_color
+        self.normal_color=normal_color
+
+        self.text = render_font(font, text, self.normal_color)
 
         # create a rect at the right of the text, of the same height
 
@@ -31,14 +34,14 @@ class CheckBox:
             self.rect.height)
         self.over_image.fill(IVORY)
         self.over_image.draw_image(self.text, 0, 0)
-        self.over_image.draw_rect(DARKBLUE, self.rect)
+        self.over_image.draw_rect(self.over_color, self.rect)
 
         self.normal_image = Image(
             self.text.get_width() + self.rect.height // 2 + self.rect.height,
             self.rect.height)
         self.normal_image.fill(IVORY)
         self.normal_image.draw_image(self.text, 0, 0)
-        self.normal_image.draw_rect(DARKGREY, self.rect)
+        self.normal_image.draw_rect(self.normal_color, self.rect)
 
     def keyboard_input(self, event):
         pass

@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 from jam.level.tiles import TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT, POINT_TREE
 
@@ -40,3 +41,31 @@ class Grid:
     def set_points(self, x, y, points, point_type):
         self.points[x, y] = points
         self.victory_points[x, y] = point_type
+
+    def load_from_json(self, json_file_name):
+        
+        json_file = open(json_file_name)
+        data = json.load(json_file) 
+
+        self.width = data["width"]
+        self.height = data["height"]
+        self.rabbit_start = data["rabbit_start"]
+        self.robot_start = data["robot_start"]
+        self.tiles = np.fromstring(data["tiles"])
+        self.points=np.fromstring(data["points"])
+        self.victory_points=np.fromstring(data["victory_points"])
+
+    
+
+    def save_to_json(self):
+        dic_json_file = {}
+        dic_json_file["width"]=self.width
+        dic_json_file["height"]=self.height
+        dic_json_file["rabbit_start"]=self.rabbit_start
+        dic_json_file["robot_start"]=self.robot_start
+        dic_json_file["tiles"]=np.array2string(self.tiles)
+        dic_json_file["points"]=np.array2string(self.points)
+        dic_json_file["victory_points"]=np.array2string(self.victory_points)
+
+        json_file = json.dumps(dic_json_file)
+        return json_file

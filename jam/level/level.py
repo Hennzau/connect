@@ -13,8 +13,6 @@ class Level:
         self.current_player = None
         self.current_player = 0
 
-        self.selector_pos = (0, 0)
-
         self.build_image()
 
     def keyboard_input(self, event):
@@ -22,13 +20,7 @@ class Level:
             self.players[self.current_player].keyboard_input(event)
 
     def mouse_motion(self, event):
-        # get mouse pos and convert to grid pos
-
-        x, y = event.pos
-        x //= TILE_SIZE
-        y //= TILE_SIZE
-
-        self.selector_pos = (x, y)
+        pass
 
     def mouse_input(self, event):
         pass

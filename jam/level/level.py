@@ -33,7 +33,8 @@ class Level:
         pass
 
     def update(self):
-        pass
+        for player in self.players:
+            player.update()
 
     def build_image(self):
         for i in range (self.grid.width):

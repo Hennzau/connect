@@ -14,7 +14,7 @@ class Game:
         self.state = [
             MainMenu(width, height),
             OptionMenu(width, height),
-            InGame(width, height),g
+            InGame(width, height),
             None,
             DefeatMenu(width,height)
         ]

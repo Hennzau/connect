@@ -1,6 +1,6 @@
 import numpy as np
 
-from jam.level.tiles import TILE_GREEN
+from jam.level.tiles import TILE_GREEN, TILE_GREY, TILE_WALL
 
 
 class Grid:
@@ -9,7 +9,19 @@ class Grid:
         self.height = height
 
         self.tiles = np.zeros((width, height))
-        self.tiles.fill(TILE_GREEN)
+        self.tiles.fill(TILE_GREY)
+        self.tiles[0,0]=TILE_GREEN
+        self.points=np.zeros((width,height))
+        self.points[0,3]=2
 
     def get_tile(self, x, y):
         return self.tiles[x,y]
+    
+    def get_points(self,x,y):
+        return self.points[x,y]
+    
+    def set_tile(self,x,y,tile):
+        self.tiles[x,y]=tile
+
+    def set_points_to_zero(self,x,y):
+        self.points[x,y]=0

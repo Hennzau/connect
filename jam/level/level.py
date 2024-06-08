@@ -19,6 +19,9 @@ class Level:
         if self.current_player is not None:
             self.players[self.current_player].keyboard_input(event)
 
+            if event.type == pygame.KEYDOWN and event.key==pygame.K_SPACE:
+                self.current_player=(self.current_player+1)%len(self.players)
+
     def mouse_motion(self, event):
         pass
 

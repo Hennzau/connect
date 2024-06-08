@@ -172,6 +172,7 @@ class InGame:
                             level.grid.set_tile(x,y,player_type)
                             level.build_image()
                             player.power=power-1
+                            player.build_image()
 
 
         self.editor.mouse_input(event)
@@ -229,6 +230,8 @@ class InGame:
             for player in current_level.players:
                 surface.draw_image(player.image, x + player.render_pos[0] * TILE_SIZE,
                                    y + player.render_pos[1] * TILE_SIZE)
+                surface.draw_image(player.power_image, x + (player.render_pos[0]+1) * TILE_SIZE,
+                                   y + player.render_pos[1] * TILE_SIZE-player.power_image.height)
 
             # draw selector
 

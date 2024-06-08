@@ -187,6 +187,16 @@ class InGame:
             else:
                 self.selector_pos = None
 
+        self.editor.mouse_motion(event)
+
+    def update(self):
+        self.interface.update()
+        self.sprites.update()
+        self.particle_system.update()
+
+        if self.current_level is not None:
+            self.levels[self.current_level].update()
+
             if self.editor.active:
                 level = self.levels[self.current_level]
 
@@ -214,16 +224,6 @@ class InGame:
                                 player.power = power - 1
                                 player.build_image()
 
-        self.editor.mouse_motion(event)
-
-    def update(self):
-        self.interface.update()
-        self.sprites.update()
-        self.particle_system.update()
-
-        if self.current_level is not None:
-            self.levels[self.current_level].update()
-
         self.editor.update()
 
     def render(self, surface):
@@ -245,8 +245,8 @@ class InGame:
             for player in current_level.players:
                 surface.draw_image(player.image, x + player.render_pos[0] * TILE_SIZE,
                                    y + player.render_pos[1] * TILE_SIZE)
-                surface.draw_image(player.power_image, x + (player.render_pos[0]+1) * TILE_SIZE,
-                                   y + player.render_pos[1] * TILE_SIZE-player.power_image.height)
+                surface.draw_image(player.power_image, x + (player.render_pos[0] + 1) * TILE_SIZE,
+                                   y + player.render_pos[1] * TILE_SIZE - player.power_image.height)
 
             # draw selector
 

@@ -20,85 +20,11 @@ from gfs.effects.point_particle import PointParticle
 
 from jam.level.level import Level
 from jam.level.grid import Grid
-from jam.level.player import Player, RABBIT_TYPE, ROBOT_TYPE
+from jam.level.rabbit import Rabbit
+from jam.level.robot import Robot
 from jam.level.tiles import TILE_SIZE, TILE_GREEN, TILE_GREY, TILE_WALL
 
-
-class Editor:
-    def __init__(self):
-        self.current_type = None
-        self.active = False
-
-        self.interface = Interface()
-
-        # check box
-        self.green_check_box = CheckBox(PLAYGROUND_30, "Green Tile", (0, 100), self.switch_to_green,
-                                        self.switch_to_none)
-
-        self.interface.add_gui(self.green_check_box)
-
-        # check box
-        self.grey_check_box = CheckBox(PLAYGROUND_30, "Grey Tile", (0, 200), self.switch_to_grey,
-                                       self.switch_to_none)
-
-        self.interface.add_gui(self.grey_check_box)
-
-        # check box
-        self.wall_check_box = CheckBox(PLAYGROUND_30, "Wall Tile", (0, 300), self.switch_to_wall,
-                                       self.switch_to_none)
-
-        self.interface.add_gui(self.wall_check_box)
-
-    def activate(self):
-        self.active = True
-
-    def deactivate(self):
-        self.active = False
-
-    def switch_to_none(self):
-        self.current_type = None
-
-        self.green_check_box.check = False
-        self.grey_check_box.check = False
-        self.wall_check_box.check = False
-
-    def switch_to_wall(self):
-        self.current_type = TILE_WALL
-
-        self.green_check_box.check = False
-        self.grey_check_box.check = False
-
-    def switch_to_green(self):
-        self.current_type = TILE_GREEN
-
-        self.grey_check_box.check = False
-        self.wall_check_box.check = False
-
-    def switch_to_grey(self):
-        self.current_type = TILE_GREY
-
-        self.green_check_box.check = False
-        self.wall_check_box.check = False
-
-    def render(self, surface):
-        if self.active:
-            self.interface.render(surface)
-
-    def keyboard_input(self, event):
-        if self.active:
-            self.interface.keyboard_input(event)
-
-    def mouse_input(self, event):
-        if self.active:
-            self.interface.mouse_input(event)
-
-    def mouse_motion(self, event):
-        if self.active:
-            self.interface.mouse_motion(event)
-
-    def update(self):
-        if self.active:
-            self.interface.update()
+from jam.editor import Editor
 
 
 class InGame:
@@ -138,8 +64,7 @@ class InGame:
 
         # tests
         grid = Grid(20, 10)
-        self.levels.append(
-            Level(grid, [Player(grid, RABBIT_TYPE, np.array([0, 0])), Player(grid, ROBOT_TYPE, np.array([0, 4]))]))
+        self.levels.append(Level(grid))
         self.current_level = 0
         self.selector_pos = (0, 0)
 
@@ -198,9 +123,14 @@ class InGame:
         if self.current_level is not None:
             level = self.levels[self.current_level]
             level.update()
-            for player in level.players:
-                if level.grid.get_tile(player.grid_pos[0], player.grid_pos[1]) != player.type:
-                    self.next_state = DEFEAT_MENU
+
+            if level.grid.get_tile(level.rabbit.grid_pos[0], level.rabbit.grid_pos[1]) != level.rabbit.type:
+                level.reload()
+                self.next_state = DEFEAT_MENU
+
+            if level.grid.get_tile(level.robot.grid_pos[0], level.robot.grid_pos[1]) != level.robot.type:
+                level.reload()
+                self.next_state = DEFEAT_MENU
 
             if self.editor.active:
                 level = self.levels[self.current_level]
@@ -215,19 +145,17 @@ class InGame:
             else:
                 level = self.levels[self.current_level]
 
-                if level.current_player is not None:
-                    player = level.players[level.current_player]
-                    player_type = player.type
-                    power = player.power
-                    if self.selector_pos is not None:
-                        x = int(self.selector_pos[0])
-                        y = int(self.selector_pos[1])
-                        if self.left_click:
-                            if power > 0 and level.grid.get_tile(x, y) != player_type and level.grid.end != [x, y]:
-                                level.grid.set_tile(x, y, player_type)
-                                level.build_image()
-                                player.power = power - 1
-                                player.build_image()
+                player_type = level.player.type
+                power = level.player.power
+                if self.selector_pos is not None:
+                    x = int(self.selector_pos[0])
+                    y = int(self.selector_pos[1])
+                    if self.left_click:
+                        if power > 0 and level.grid.get_tile(x, y) != player_type and level.grid.end != [x, y]:
+                            level.grid.set_tile(x, y, player_type)
+                            level.build_image()
+                            level.player.power = power - 1
+                            level.player.build_image()
 
         self.editor.update()
 
@@ -247,11 +175,19 @@ class InGame:
 
             surface.draw_image(current_level.image, x, y)
 
-            for player in current_level.players:
-                surface.draw_image(player.image, x + player.render_pos[0] * TILE_SIZE,
-                                   y + player.render_pos[1] * TILE_SIZE)
-                surface.draw_image(player.power_image, x + (player.render_pos[0] + 1) * TILE_SIZE,
-                                   y + player.render_pos[1] * TILE_SIZE - player.power_image.height)
+            surface.draw_image(current_level.rabbit.image, x + current_level.rabbit.render_pos[0] * TILE_SIZE,
+                               y + current_level.rabbit.render_pos[1] * TILE_SIZE)
+            surface.draw_image(current_level.rabbit.power_image,
+                               x + (current_level.rabbit.render_pos[0] + 1) * TILE_SIZE,
+                               y + current_level.rabbit.render_pos[
+                                   1] * TILE_SIZE - current_level.rabbit.power_image.height)
+
+            surface.draw_image(current_level.robot.image, x + current_level.robot.render_pos[0] * TILE_SIZE,
+                               y + current_level.robot.render_pos[1] * TILE_SIZE)
+            surface.draw_image(current_level.robot.power_image,
+                               x + (current_level.robot.render_pos[0] + 1) * TILE_SIZE,
+                               y + current_level.robot.render_pos[
+                                   1] * TILE_SIZE - current_level.robot.power_image.height)
 
             # draw selector
 

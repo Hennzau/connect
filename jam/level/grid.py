@@ -10,10 +10,15 @@ class Grid:
 
         self.tiles = np.zeros((width, height))
         self.tiles.fill(TILE_GREY)
+
+        # test before being capable of loading grid from file
         self.tiles[0, 0] = TILE_GREEN
         self.points = np.zeros((width, height))
         self.points[0, 3] = 2
         self.end = [width - 1, height - 1]
+
+        self.rabbit_start = [0, 0]
+        self.robot_start = [5, 5]
 
     def get_tile(self, x, y):
         return self.tiles[x, y]

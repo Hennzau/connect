@@ -16,7 +16,7 @@ class Game:
             OptionMenu(width, height),
             InGame(width, height),
             None,
-            DefeatMenu(width,height)
+            DefeatMenu(width, height)
         ]
 
         self.current_state = MAIN_MENU

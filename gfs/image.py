@@ -5,7 +5,7 @@ class Image:
     def __init__(self, width=0, height=0):
         self.width = width
         self.height = height
-        self.py_image = pygame.Surface((width, height))
+        self.py_image = pygame.Surface((width, height), pygame.SRCALPHA)
 
     def load_from_pygame_image(self, py_image):
         self.width = py_image.get_width()

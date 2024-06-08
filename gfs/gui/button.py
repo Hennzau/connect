@@ -24,11 +24,9 @@ class Button:
         self.rect = self.rect.move(pos[0], pos[1])
 
         self.over_image = Image(self.rect.width, self.rect.height)
-        self.over_image.fill(IVORY)
         self.over_image.draw_image(self.over_text, 0, 0)
 
         self.normal_image = Image(self.rect.width, self.rect.height)
-        self.normal_image.fill(IVORY)
         self.normal_image.draw_image(self.normal_text, 0, 0)
 
     def keyboard_input(self, event):

@@ -32,14 +32,12 @@ class CheckBox:
         self.over_image = Image(
             self.text.get_width() + self.rect.height // 2 + self.rect.height,
             self.rect.height)
-        self.over_image.fill(IVORY)
         self.over_image.draw_image(self.text, 0, 0)
         self.over_image.draw_rect(self.over_color, self.rect)
 
         self.normal_image = Image(
             self.text.get_width() + self.rect.height // 2 + self.rect.height,
             self.rect.height)
-        self.normal_image.fill(IVORY)
         self.normal_image.draw_image(self.text, 0, 0)
         self.normal_image.draw_rect(self.normal_color, self.rect)
 

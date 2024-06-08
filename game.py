@@ -3,7 +3,8 @@ from gfs.image import Image
 from jam.main_menu import MainMenu
 from jam.in_game import InGame
 from jam.option_menu import OptionMenu
-from jam.states import MAIN_MENU
+from jam.defeat_menu import DefeatMenu
+from jam.states import MAIN_MENU, DEFEAT_MENU
 
 
 class Game:
@@ -13,7 +14,9 @@ class Game:
         self.state = [
             MainMenu(width, height),
             OptionMenu(width, height),
-            InGame(width, height)
+            InGame(width, height),g
+            None,
+            DefeatMenu(width,height)
         ]
 
         self.current_state = MAIN_MENU

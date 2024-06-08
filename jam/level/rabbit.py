@@ -1,17 +1,13 @@
 import pygame
 import numpy as np
 
-from gfs.image import Image
-
-from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
-from gfs.pallet import DARKBLUE, RED, IVORY
+from gfs.fonts import PLAYGROUND_20, render_font
+from gfs.pallet import IVORY
 
 from jam.level.tiles import TILE_SIZE, TILE_GRASS
-from jam.level.grid import Grid
 
 from gfs.images import JUMPING_RIGHT, JUMPING_LEFT, JUMPING_UP, JUMPING_DOWN, IDLE_RIGHT, IDLE_LEFT, IDLE_UP, IDLE_DOWN
 
-from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
 
 
@@ -123,7 +119,6 @@ class Rabbit:
         self.power_image = render_font(PLAYGROUND_20, str(int(self.power)), IVORY)
 
     def update(self):
-
         if self.up and self.timer < 0.016:
             self.move_up()
             self.sprite.animate("jump_up", "idle_up")

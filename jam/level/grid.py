@@ -23,6 +23,9 @@ class Grid:
         self.rabbit_start = [0, 0]
         self.robot_start = [5, 5]
 
+        self.victory_points = np.zeros((width, height))
+        self.victory_points[0, 3] = TILE_GRASS
+
     def get_tile(self, x, y):
         return self.tiles[x, y]
 

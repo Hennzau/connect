@@ -51,9 +51,10 @@ class InGame:
         self.current_level = None
 
         # tests
-        grid=Grid(10,10)
+        grid = Grid(10, 10)
         self.levels.append(Level(grid, [Player(grid, RABBIT_TYPE)]))
         self.current_level = 0
+        self.selector_pos = (0, 0)
 
     def main_menu(self):
         self.next_state = MAIN_MENU
@@ -76,11 +77,28 @@ class InGame:
         if self.current_level is not None:
             self.levels[self.current_level].mouse_motion(event)
 
+            # get the position of the top left corner of the level image
+            x = (self.surface_configuration[0] - self.levels[self.current_level].image.get_width()) / 2
+            y = (self.surface_configuration[1] - self.levels[self.current_level].image.get_height()) / 2
+
+            # get the position of the selector
+            x = (event.pos[0] - x) // TILE_SIZE
+            y = (event.pos[1] - y) // TILE_SIZE
+
+            # set the selector position if it is inside the level grid
+
+            if 0 <= x < self.levels[self.current_level].grid.width and 0 <= y < self.levels[
+                self.current_level].grid.height:
+                self.selector_pos = (x, y)
+            else:
+                self.selector_pos = None
+
     def update(self):
         self.interface.update()
         self.sprites.update()
         self.particle_system.update()
-        if self.current_level!=None:
+
+        if self.current_level is not None:
             self.levels[self.current_level].update()
 
     def render(self, surface):
@@ -100,17 +118,16 @@ class InGame:
             surface.draw_image(current_level.image, x, y)
 
             for player in current_level.players:
-                surface.draw_image(player.image, x + player.render_pos[0] * TILE_SIZE, y + player.render_pos[1] * TILE_SIZE)
+                surface.draw_image(player.image, x + player.render_pos[0] * TILE_SIZE,
+                                   y + player.render_pos[1] * TILE_SIZE)
 
             # draw selector
 
-            gap_x = x % TILE_SIZE
-            gap_y = y % TILE_SIZE
+            if self.selector_pos is not None:
+                x = self.selector_pos[0] * TILE_SIZE + x
+                y = self.selector_pos[1] * TILE_SIZE + y
 
-            x = current_level.selector_pos[0] * TILE_SIZE + gap_x
-            y = current_level.selector_pos[1] * TILE_SIZE + gap_y
-
-            surface.draw_image(SELECTOR_IMAGE, x, y)
+                surface.draw_image(SELECTOR_IMAGE, x, y)
 
         self.interface.render(surface)
         self.sprites.render(surface)

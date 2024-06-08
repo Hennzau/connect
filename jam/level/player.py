@@ -22,7 +22,7 @@ class Player:
             self.image.fill((255, 0, 0))
         elif self.type == ROBOT_TYPE:
             self.image.fill((0,0,255))
-        
+
 
         self.power = 5
         self.power_image = render_font(PLAYGROUND_20,str(int(self.power)),IVORY)
@@ -60,12 +60,14 @@ class Player:
                 self.move_left()
             elif event.key == pygame.K_RIGHT:
                 self.move_right()
-            
+
     def build_image(self):
         self.power_image = render_font(PLAYGROUND_20,str(int(self.power)),IVORY)
 
     def update(self):
+
         self.render_pos += self.velocity * (1 / 60)
+
         self.velocity = (self.grid_pos - self.render_pos) * 10
 
         if self.grid.get_points(self.grid_pos[0],self.grid_pos[1])>0:

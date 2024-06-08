@@ -1,6 +1,6 @@
 from gfs.image import Image
 import gfs.pallet
-from jam.level.tiles import TILE_SIZE,TILE_GREEN, TILE_GREY
+from jam.level.tiles import TILE_SIZE,TILE_GREEN, TILE_GREY, TILE_WALL
 import pygame
 
 
@@ -37,4 +37,7 @@ class Level:
                     self.image.draw_rect(gfs.pallet.DARKGREY,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
                 if type == TILE_GREEN:
                     self.image.draw_rect(gfs.pallet.GREEN,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+                if type == TILE_WALL:
+                    self.image.draw_rect(gfs.pallet.VOLKSWAGEN_TAUPE,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
+
 

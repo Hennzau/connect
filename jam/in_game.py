@@ -3,6 +3,7 @@ import numpy as np
 
 from gfs.gui.interface import Interface
 from gfs.gui.button import Button
+from gfs.gui.check_box import CheckBox
 
 from gfs.fonts import PLAYGROUND_50
 from gfs.pallet import DARKBLUE, RED, IVORY
@@ -21,6 +22,13 @@ from jam.level.grid import Grid
 from jam.level.player import Player, RABBIT_TYPE, ROBOT_TYPE
 from jam.level.tiles import TILE_SIZE
 
+class Editor:
+    def __init__(self):
+        self.current_type = None
+    def switch_to_green (self):
+        pass
+    def switch_to_grey (self):
+        pass
 
 class InGame:
     def __init__(self, width, height):
@@ -28,6 +36,7 @@ class InGame:
         self.next_state = None
 
         self.interface = Interface()
+        self.editor = Editor()
 
         main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
 
@@ -37,6 +46,9 @@ class InGame:
         main_menu_button.pos = (x, y)
 
         self.interface.add_gui(main_menu_button)
+
+        #check box
+        check_box = CheckBox(MOTO_MANGUCODE_50, "", (0, 0), self.main_menu)
 
         # tests
 

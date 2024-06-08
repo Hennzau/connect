@@ -8,15 +8,17 @@ from gfs.pallet import IVORY, DARKBLUE, DARKGREY, VOLKSWAGEN_TAUPE
 
 
 class Button:
-    def __init__(self, font, text, pos, function):
+    def __init__(self, font, text, pos, function, normal_color=DARKGREY, over_color=DARKBLUE):
         self.text = text
         self.function = function
         self.pos = pos
+        self.normal_color=normal_color
+        self.over_color=over_color
 
         self.over = False
 
-        self.over_text = render_font(font, text, DARKBLUE)
-        self.normal_text = render_font(font, text, DARKGREY)
+        self.over_text = render_font(font, text, self.over_color)
+        self.normal_text = render_font(font, text, self.normal_color)
 
         self.rect = self.normal_text.get_rect()
         self.rect = self.rect.move(pos[0], pos[1])

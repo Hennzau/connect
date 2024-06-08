@@ -51,8 +51,8 @@ class InGame:
         self.current_level = None
 
         # tests
-
-        self.levels.append(Level(Grid(10, 10), [Player()]))
+        grid=Grid(10,10)
+        self.levels.append(Level(grid, [Player(grid)]))
         self.current_level = 0
 
     def main_menu(self):
@@ -80,6 +80,8 @@ class InGame:
         self.interface.update()
         self.sprites.update()
         self.particle_system.update()
+        if self.current_level!=None:
+            self.levels[self.current_level].update()
 
     def render(self, surface):
         surface.fill(IVORY)
@@ -98,7 +100,7 @@ class InGame:
             surface.draw_image(current_level.image, x, y)
 
             for player in current_level.players:
-                surface.draw_image(player.image, x + player.grid_pos[0] * TILE_SIZE, y + player.grid_pos[1] * TILE_SIZE)
+                surface.draw_image(player.image, x + player.render_pos[0] * TILE_SIZE, y + player.render_pos[1] * TILE_SIZE)
 
             # draw selector
 

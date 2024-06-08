@@ -12,4 +12,4 @@ class Grid:
         self.tiles.fill(TILE_GREEN)
 
     def get_tile(self, x, y):
-        pass
+        return self.tiles[x,y]

@@ -3,7 +3,7 @@ from gfs.image import Image
 from jam.level.tiles import TILE_SIZE
 
 BACKGROUND_IMAGE_FULL = Image()
-BACKGROUND_IMAGE_FULL.load_from_file("assets/images/background.jpeg")
+BACKGROUND_IMAGE_FULL.load_from_file("assets/images/background.png")
 BACKGROUND_IMAGE_FULL.resize(1280, 720)
 
 SELECTOR_IMAGE = Image()

@@ -11,6 +11,8 @@ from jam.states import IN_GAME, OPTION_MENU, LEVEL_SELECTION
 from gfs.music import Music
 from gfs.sounds import MAIN_MENU_MUSIC
 
+from jam.option_menu import PLAY_MUSIC
+
 
 class MainMenu:
     def __init__(self, width, height):
@@ -59,7 +61,8 @@ class MainMenu:
     def update(self):
         self.interface.update()
 
-        self.music.update()
+        if PLAY_MUSIC:
+            self.music.update()
 
     def render(self, surface):
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)

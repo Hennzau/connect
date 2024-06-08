@@ -29,6 +29,7 @@ from jam.editor import Editor
 from gfs.music import Music
 from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND
 
+from jam.option_menu import PLAY_MUSIC
 
 class InGame:
     def __init__(self, width, height):
@@ -140,7 +141,9 @@ class InGame:
 
     def update(self):
         self.interface.update()
-        self.music.update()
+
+        if PLAY_MUSIC:
+            self.music.update()
 
         if self.current_level is not None:
             level = self.levels[self.current_level]

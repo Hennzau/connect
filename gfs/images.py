@@ -28,3 +28,35 @@ ROAD_IMAGE.resize(TILE_SIZE, TILE_SIZE)
 WATER_IMAGE = Image()
 WATER_IMAGE.load_from_file("assets/images/water.png")
 WATER_IMAGE.resize(TILE_SIZE, TILE_SIZE)
+
+JUMPING_RIGHT = Image()
+JUMPING_RIGHT.load_from_file("assets/images/jumping_right.png")
+JUMPING_RIGHT.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+JUMPING_LEFT = Image()
+JUMPING_LEFT.load_from_file("assets/images/jumping_left.png")
+JUMPING_LEFT.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+JUMPING_UP = Image()
+JUMPING_UP.load_from_file("assets/images/jumping_up.png")
+JUMPING_UP.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+JUMPING_DOWN = Image()
+JUMPING_DOWN.load_from_file("assets/images/jumping_down.png")
+JUMPING_DOWN.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+IDLE_RIGHT = Image()
+IDLE_RIGHT.load_from_file("assets/images/idle_right.png")
+IDLE_RIGHT.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+IDLE_LEFT = Image()
+IDLE_LEFT.load_from_file("assets/images/idle_left.png")
+IDLE_LEFT.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+IDLE_UP = Image()
+IDLE_UP.load_from_file("assets/images/idle_up.png")
+IDLE_UP.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+IDLE_DOWN = Image()
+IDLE_DOWN.load_from_file("assets/images/idle_down.png")
+IDLE_DOWN.resize(8 * TILE_SIZE, 2 * TILE_SIZE)

@@ -6,14 +6,17 @@ from gfs.image import Image
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 from gfs.pallet import DARKBLUE, RED, IVORY
 
-from jam.level.tiles import TILE_SIZE, TILE_GREEN
+from jam.level.tiles import TILE_SIZE, TILE_GRASS
 from jam.level.grid import Grid
+
+from gfs.images import JUMPING_RIGHT, JUMPING_LEFT, JUMPING_UP, JUMPING_DOWN, IDLE_RIGHT, IDLE_LEFT, IDLE_UP, IDLE_DOWN
+
+from gfs.sprites import Sprites
+from gfs.sprite import AnimatedSprite
 
 
 class Rabbit:
     def __init__(self, grid):
-        self.image = Image(TILE_SIZE, TILE_SIZE)
-        self.image.fill(DARKBLUE)
         self.grid = grid
 
         self.power = 5
@@ -26,79 +29,122 @@ class Rabbit:
 
         self.entropy = 0
 
-        self.type = TILE_GREEN
+        self.type = TILE_GRASS
+
+        self.sprite = AnimatedSprite(0, 0, TILE_SIZE, TILE_SIZE, {
+            "jump_right": (4, JUMPING_RIGHT),
+            "jump_left": (4, JUMPING_LEFT),
+            "jump_up": (4, JUMPING_UP),
+            "jump_down": (4, JUMPING_DOWN),
+            "idle_right": (4, IDLE_RIGHT),
+            "idle_left": (4, IDLE_LEFT),
+            "idle_up": (4, IDLE_UP),
+            "idle_down": (4, IDLE_DOWN)
+        }, 4)
+
+        self.sprite.animate("idle_right")
+
+        self.up = False
+        self.down = False
+        self.left = False
+        self.right = False
+
+        self.timer = 0.0
 
     def move_up(self):
-        if [self.grid_pos[0], self.grid_pos[1] - 1] == self.grid.end:
+        if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
             self.grid_pos[1] -= 1
-        elif self.grid_pos[1] - 1 >= 0 and TILE_GREEN == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
-            self.grid_pos[1] -= 1
-        elif self.grid_pos[1] - 1 >= 0 and TILE_GREEN != self.grid.get_tile(self.grid_pos[0],
-                                                                           self.grid_pos[1] - 1) and self.power > 0:
+        elif self.grid_pos[1] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
+                                                                            self.grid_pos[1] - 1) and self.power > 0:
             self.grid_pos[1] -= 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREEN)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GRASS)
             self.entropy += 1
 
     def move_down(self):
-        if [self.grid_pos[0], self.grid_pos[1] + 1] == self.grid.end:
+        if self.grid_pos[1] + 1 < self.grid.height and TILE_GRASS == self.grid.get_tile(self.grid_pos[0],
+                                                                                        self.grid_pos[1] + 1):
             self.grid_pos[1] += 1
-        elif self.grid_pos[1] + 1 < self.grid.height and TILE_GREEN == self.grid.get_tile(self.grid_pos[0],
-                                                                                         self.grid_pos[1] + 1):
-            self.grid_pos[1] += 1
-        elif self.grid_pos[1] + 1 < self.grid.height and TILE_GREEN != self.grid.get_tile(self.grid_pos[0],
-                                                                                         self.grid_pos[
-                                                                                             1] + 1) and self.power > 0:
+        elif self.grid_pos[1] + 1 < self.grid.height and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
+                                                                                          self.grid_pos[
+                                                                                              1] + 1) and self.power > 0:
             self.grid_pos[1] += 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREEN)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GRASS)
             self.entropy += 1
 
     def move_left(self):
-        if [self.grid_pos[0] - 1, self.grid_pos[1]] == self.grid.end:
+        if self.grid_pos[0] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
             self.grid_pos[0] -= 1
-        elif self.grid_pos[0] - 1 >= 0 and TILE_GREEN == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
-            self.grid_pos[0] -= 1
-        elif self.grid_pos[0] - 1 >= 0 and TILE_GREEN != self.grid.get_tile(self.grid_pos[0] - 1,
-                                                                           self.grid_pos[1]) and self.power > 0:
+        elif self.grid_pos[0] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] - 1,
+                                                                            self.grid_pos[1]) and self.power > 0:
             self.grid_pos[0] -= 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREEN)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GRASS)
             self.entropy += 1
 
     def move_right(self):
-        if [self.grid_pos[0] + 1, self.grid_pos[1]] == self.grid.end:
-            self.grid_pos[0] += 1
-        elif self.grid_pos[0] + 1 < self.grid.width and TILE_GREEN == self.grid.get_tile(
+        if self.grid_pos[0] + 1 < self.grid.width and TILE_GRASS == self.grid.get_tile(
                 self.grid_pos[0] + 1, self.grid_pos[1]):
             self.grid_pos[0] += 1
-        elif self.grid_pos[0] + 1 < self.grid.width and TILE_GREEN != self.grid.get_tile(self.grid_pos[0] + 1,
-                                                                                        self.grid_pos[
-                                                                                            1]) and self.power > 0:
+        elif self.grid_pos[0] + 1 < self.grid.width and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] + 1,
+                                                                                         self.grid_pos[
+                                                                                             1]) and self.power > 0:
             self.grid_pos[0] += 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREEN)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GRASS)
             self.entropy += 1
 
     def keyboard_input(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                self.move_up()
+                self.up = True
             elif event.key == pygame.K_DOWN:
-                self.move_down()
+                self.down = True
             elif event.key == pygame.K_LEFT:
-                self.move_left()
+                self.left = True
             elif event.key == pygame.K_RIGHT:
-                self.move_right()
+                self.right = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                self.up = False
+            elif event.key == pygame.K_DOWN:
+                self.down = False
+            elif event.key == pygame.K_LEFT:
+                self.left = False
+            elif event.key == pygame.K_RIGHT:
+                self.right = False
 
     def build_image(self):
         self.power_image = render_font(PLAYGROUND_20, str(int(self.power)), IVORY)
 
     def update(self):
+
+        if self.up and self.timer < 0.016:
+            self.move_up()
+            self.sprite.animate("jump_up", "idle_up")
+        if self.down and self.timer < 0.016:
+            self.move_down()
+            self.sprite.animate("jump_down", "idle_down")
+        if self.left and self.timer < 0.016:
+            self.move_left()
+            self.sprite.animate("jump_left", "idle_left")
+        if self.right and self.timer < 0.016:
+            self.move_right()
+            self.sprite.animate("jump_right", "idle_right")
+
+        if self.up or self.down or self.left or self.right:
+            self.timer += 1 / 60
+        else:
+            self.timer = 0.0
+
+        if self.timer >= 0.5:
+            self.timer = 0.0
+
         self.render_pos += self.velocity * (1 / 60)
 
         if np.linalg.norm(self.grid_pos - self.render_pos) < 0.05:

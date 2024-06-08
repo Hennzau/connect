@@ -7,7 +7,7 @@ from gfs.gui.check_box import CheckBox
 
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30
 from gfs.pallet import DARKBLUE, RED, IVORY
-from gfs.images import SELECTOR_IMAGE
+from gfs.images import SELECTOR_IMAGE, JUMPING_RIGHT
 
 from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
@@ -22,7 +22,7 @@ from jam.level.level import Level
 from jam.level.grid import Grid
 from jam.level.rabbit import Rabbit
 from jam.level.robot import Robot
-from jam.level.tiles import TILE_SIZE, TILE_GREEN, TILE_GREY, TILE_WALL
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER
 
 from jam.editor import Editor
 
@@ -175,19 +175,19 @@ class InGame:
 
             surface.draw_image(current_level.image, x, y)
 
-            surface.draw_image(current_level.rabbit.image, x + current_level.rabbit.render_pos[0] * TILE_SIZE,
-                               y + current_level.rabbit.render_pos[1] * TILE_SIZE)
-            surface.draw_image(current_level.rabbit.power_image,
-                               x + (current_level.rabbit.render_pos[0] + 1) * TILE_SIZE,
-                               y + current_level.rabbit.render_pos[
-                                   1] * TILE_SIZE - current_level.rabbit.power_image.height)
-
             surface.draw_image(current_level.robot.image, x + current_level.robot.render_pos[0] * TILE_SIZE,
                                y + current_level.robot.render_pos[1] * TILE_SIZE)
             surface.draw_image(current_level.robot.power_image,
                                x + (current_level.robot.render_pos[0] + 1) * TILE_SIZE,
                                y + current_level.robot.render_pos[
                                    1] * TILE_SIZE - current_level.robot.power_image.height)
+
+            # draw the sprites but move them to the right position
+
+            current_level.rabbit.sprite.rect.x = x + current_level.rabbit.render_pos[0] * TILE_SIZE - TILE_SIZE // 2
+            current_level.rabbit.sprite.rect.y = y + current_level.rabbit.render_pos[1] * TILE_SIZE - TILE_SIZE // 2
+
+            current_level.sprites.render(surface)
 
             # draw selector
 

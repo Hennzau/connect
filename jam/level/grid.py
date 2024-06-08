@@ -1,6 +1,6 @@
 import numpy as np
 
-from jam.level.tiles import TILE_GREEN, TILE_GREY, TILE_WALL
+from jam.level.tiles import TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT
 
 
 class Grid:
@@ -9,13 +9,16 @@ class Grid:
         self.height = height
 
         self.tiles = np.zeros((width, height))
-        self.tiles.fill(TILE_GREY)
+        self.tiles.fill(TILE_DIRT)
 
         # test before being capable of loading grid from file
-        self.tiles[0, 0] = TILE_GREEN
+
+        self.tiles[0, 0] = TILE_GRASS
+        self.tiles[5, 5] = TILE_ROAD
+        self.tiles[10, 8] = TILE_WATER
+
         self.points = np.zeros((width, height))
         self.points[0, 3] = 2
-        self.end = [width - 1, height - 1]
 
         self.rabbit_start = [0, 0]
         self.robot_start = [5, 5]

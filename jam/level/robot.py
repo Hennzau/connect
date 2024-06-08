@@ -6,7 +6,7 @@ from gfs.image import Image
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 from gfs.pallet import DARKBLUE, RED, IVORY
 
-from jam.level.tiles import TILE_SIZE, TILE_GREY
+from jam.level.tiles import TILE_SIZE, TILE_ROAD
 from jam.level.grid import Grid
 
 
@@ -26,62 +26,54 @@ class Robot:
 
         self.entropy = 0
 
-        self.type = TILE_GREY
+        self.type = TILE_ROAD
 
     def move_up(self):
-        if [self.grid_pos[0], self.grid_pos[1] - 1] == self.grid.end:
+        if self.grid_pos[1] - 1 >= 0 and TILE_ROAD == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
             self.grid_pos[1] -= 1
-        elif self.grid_pos[1] - 1 >= 0 and TILE_GREY == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
-            self.grid_pos[1] -= 1
-        elif self.grid_pos[1] - 1 >= 0 and TILE_GREY != self.grid.get_tile(self.grid_pos[0],
+        elif self.grid_pos[1] - 1 >= 0 and TILE_ROAD != self.grid.get_tile(self.grid_pos[0],
                                                                            self.grid_pos[1] - 1) and self.power > 0:
             self.grid_pos[1] -= 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREY)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_ROAD)
             self.entropy += 1
 
     def move_down(self):
-        if [self.grid_pos[0], self.grid_pos[1] + 1] == self.grid.end:
+        if self.grid_pos[1] + 1 < self.grid.height and TILE_ROAD == self.grid.get_tile(self.grid_pos[0],
+                                                                                       self.grid_pos[1] + 1):
             self.grid_pos[1] += 1
-        elif self.grid_pos[1] + 1 < self.grid.height and TILE_GREY == self.grid.get_tile(self.grid_pos[0],
-                                                                                         self.grid_pos[1] + 1):
-            self.grid_pos[1] += 1
-        elif self.grid_pos[1] + 1 < self.grid.height and TILE_GREY != self.grid.get_tile(self.grid_pos[0],
+        elif self.grid_pos[1] + 1 < self.grid.height and TILE_ROAD != self.grid.get_tile(self.grid_pos[0],
                                                                                          self.grid_pos[
                                                                                              1] + 1) and self.power > 0:
             self.grid_pos[1] += 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREY)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_ROAD)
             self.entropy += 1
 
     def move_left(self):
-        if [self.grid_pos[0] - 1, self.grid_pos[1]] == self.grid.end:
+        if self.grid_pos[0] - 1 >= 0 and TILE_ROAD == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
             self.grid_pos[0] -= 1
-        elif self.grid_pos[0] - 1 >= 0 and TILE_GREY == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
-            self.grid_pos[0] -= 1
-        elif self.grid_pos[0] - 1 >= 0 and TILE_GREY != self.grid.get_tile(self.grid_pos[0] - 1,
+        elif self.grid_pos[0] - 1 >= 0 and TILE_ROAD != self.grid.get_tile(self.grid_pos[0] - 1,
                                                                            self.grid_pos[1]) and self.power > 0:
             self.grid_pos[0] -= 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREY)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_ROAD)
             self.entropy += 1
 
     def move_right(self):
-        if [self.grid_pos[0] + 1, self.grid_pos[1]] == self.grid.end:
-            self.grid_pos[0] += 1
-        elif self.grid_pos[0] + 1 < self.grid.width and TILE_GREY == self.grid.get_tile(
+        if self.grid_pos[0] + 1 < self.grid.width and TILE_ROAD == self.grid.get_tile(
                 self.grid_pos[0] + 1, self.grid_pos[1]):
             self.grid_pos[0] += 1
-        elif self.grid_pos[0] + 1 < self.grid.width and TILE_GREY != self.grid.get_tile(self.grid_pos[0] + 1,
+        elif self.grid_pos[0] + 1 < self.grid.width and TILE_ROAD != self.grid.get_tile(self.grid_pos[0] + 1,
                                                                                         self.grid_pos[
                                                                                             1]) and self.power > 0:
             self.grid_pos[0] += 1
             self.power -= 1
             self.build_image()
-            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_GREY)
+            self.grid.set_tile(self.grid_pos[0], self.grid_pos[1], TILE_ROAD)
             self.entropy += 1
 
     def keyboard_input(self, event):

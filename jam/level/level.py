@@ -2,8 +2,9 @@ import pygame
 import gfs.pallet
 
 from gfs.image import Image
-from jam.level.tiles import TILE_SIZE, TILE_GREEN, TILE_GREY, TILE_WALL
-from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
+from gfs.sprites import Sprites
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT
+from gfs.fonts import PLAYGROUND_20, render_font
 
 from jam.level.rabbit import Rabbit
 from jam.level.robot import Robot
@@ -22,6 +23,8 @@ class Level:
         self.build_image()
 
         self.last_player_entropy = 0
+        self.sprites = Sprites()
+        self.sprites.add_sprite("rabbit", self.rabbit.sprite)
 
     def keyboard_input(self, event):
         self.player.keyboard_input(event)
@@ -45,26 +48,26 @@ class Level:
             self.build_image()
             self.last_player_entropy = self.rabbit.entropy
 
+        self.sprites.update()
+
     def reload(self):
         pass
 
     def build_image(self):
-        for i in range (self.grid.width):
-            for j in range (self.grid.height):
-                type = self.grid.get_tile(i,j)
-                if type == TILE_GREY:
-                    self.image.draw_image(ROAD_IMAGE,i*TILE_SIZE,j*TILE_SIZE)
-                if type == TILE_GREEN:
-                    self.image.draw_image(GRASS_IMAGE,i*TILE_SIZE,j*TILE_SIZE)
-                if type == TILE_WALL:
-                    self.image.draw_image(WATER_IMAGE,i*TILE_SIZE,j*TILE_SIZE)
-                points=self.grid.get_points(i,j)
-                if points>0:
-                    self.power_image = render_font(PLAYGROUND_20,str(int(points)),gfs.pallet.IVORY)
-                    self.image.draw_image(self.power_image,i*TILE_SIZE+(TILE_SIZE-self.power_image.get_width())/2,j*TILE_SIZE+(TILE_SIZE-self.power_image.get_height())/2)
-                if [i,j]==self.grid.end:
-                    self.image.draw_rect(gfs.pallet.BLACK,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
-
-                if [i, j] == self.grid.end:
-                    self.image.draw_rect(gfs.pallet.BLACK,
-                                         pygame.Rect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+        for i in range(self.grid.width):
+            for j in range(self.grid.height):
+                type = self.grid.get_tile(i, j)
+                if type == TILE_ROAD:
+                    self.image.draw_image(ROAD_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+                if type == TILE_GRASS:
+                    self.image.draw_image(GRASS_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+                if type == TILE_WATER:
+                    self.image.draw_image(WATER_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+                if type == TILE_DIRT:
+                    self.image.draw_image(DIRT_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+                points = self.grid.get_points(i, j)
+                if points > 0:
+                    power_image = render_font(PLAYGROUND_20, str(int(points)), gfs.pallet.IVORY)
+                    self.image.draw_image(power_image,
+                                          i * TILE_SIZE + (TILE_SIZE - power_image.get_width()) / 2,
+                                          j * TILE_SIZE + (TILE_SIZE - power_image.get_height()) / 2)

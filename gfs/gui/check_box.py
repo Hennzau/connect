@@ -6,6 +6,8 @@ from gfs.surface import Surface
 
 from gfs.pallet import IVORY, DARKBLUE, DARKGREY
 
+from gfs.sounds import HUD
+
 
 class CheckBox:
     def __init__(self, font, text, pos, check_function, uncheck_function, normal_color=DARKGREY, over_color=DARKBLUE):
@@ -53,11 +55,15 @@ class CheckBox:
 
                 if self.check:
                     self.check_function()
+                    HUD.play()
                 else:
                     self.uncheck_function()
+                    HUD.play()
 
     def mouse_motion(self, event):
-        self.over = self.rect.collidepoint(event.pos)
+        if self.over != self.rect.collidepoint(event.pos):
+            HUD.play()
+            self.over = self.rect.collidepoint(event.pos)
 
     def update(self):
         self.rect = pygame.Rect(self.pos[0] + self.text.get_width() + self.text.get_height() // 2, self.pos[1],

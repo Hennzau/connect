@@ -4,7 +4,7 @@ from gfs.gui.button import Button
 from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, render_font
 from gfs.pallet import IVORY, DARKBLUE
 
-from jam.states import IN_GAME, OPTION_MENU
+from jam.states import IN_GAME, MAIN_MENU
 
 
 class DefeatMenu:
@@ -16,7 +16,7 @@ class DefeatMenu:
 
         self.game_name = render_font(PLAYGROUND_100, "You lost", DARKBLUE)
 
-        game_button = Button(PLAYGROUND_50, "Go to game", (0, 0), self.in_game)
+        game_button = Button(PLAYGROUND_50, "Try Again", (0, 0), self.in_game)
 
         x = (width - game_button.normal_image.get_width()) // 2
         y = height // 3 - game_button.normal_image.get_height() // 2
@@ -25,20 +25,20 @@ class DefeatMenu:
 
         self.interface.add_gui(game_button)
 
-        option_button = Button(PLAYGROUND_50, "Go to options", (0, 0), self.option_menu)
+        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
 
-        x = (width - option_button.normal_image.get_width()) // 2
-        y = height // 3 - option_button.normal_image.get_height() // 2
+        x = (width - main_menu_button.normal_image.get_width()) // 2
+        y = height - main_menu_button.normal_image.get_height() * 2
 
-        option_button.pos = (x, y + self.game_name.get_height() * 2.7)
+        main_menu_button.pos = (x, y)
 
-        self.interface.add_gui(option_button)
+        self.interface.add_gui(main_menu_button)
 
     def in_game(self):
         self.next_state = IN_GAME
 
-    def option_menu(self):
-        self.next_state = OPTION_MENU
+    def main_menu(self):
+        self.next_state = MAIN_MENU
 
     def keyboard_input(self, event):
         self.interface.keyboard_input(event)

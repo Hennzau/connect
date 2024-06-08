@@ -6,14 +6,16 @@ from gfs.surface import Surface
 
 from gfs.pallet import IVORY, DARKBLUE, DARKGREY, VOLKSWAGEN_TAUPE
 
+from gfs.sounds import HUD
+
 
 class Button:
     def __init__(self, font, text, pos, function, normal_color=DARKGREY, over_color=DARKBLUE):
         self.text = text
         self.function = function
         self.pos = pos
-        self.normal_color=normal_color
-        self.over_color=over_color
+        self.normal_color = normal_color
+        self.over_color = over_color
 
         self.over = False
 
@@ -36,9 +38,12 @@ class Button:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.function()
+                HUD.play()
 
     def mouse_motion(self, event):
-        self.over = self.rect.collidepoint(event.pos)
+        if self.over != self.rect.collidepoint(event.pos):
+            HUD.play()
+            self.over = self.rect.collidepoint(event.pos)
 
     def update(self):
         self.rect = self.normal_text.get_rect()

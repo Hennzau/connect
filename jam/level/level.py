@@ -3,12 +3,12 @@ import gfs.pallet
 
 from gfs.image import Image
 from gfs.sprites import Sprites
-from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT, POINT_TREE, POINT_STONE
 from gfs.fonts import PLAYGROUND_20, render_font
 
 from jam.level.rabbit import Rabbit
 from jam.level.robot import Robot
-from gfs.images import GRASS_IMAGE, DIRT_IMAGE, ROAD_IMAGE, WATER_IMAGE
+from gfs.images import GRASS_IMAGE, DIRT_IMAGE, ROAD_IMAGE, WATER_IMAGE, TREE_IMAGE, STONE_IMAGE
 
 
 class Level:
@@ -65,6 +65,13 @@ class Level:
                     self.image.draw_image(WATER_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
                 if type == TILE_DIRT:
                     self.image.draw_image(DIRT_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+
+                point_type = self.grid.get_victory_points(i, j)
+                if point_type == POINT_TREE:
+                    self.image.draw_image(TREE_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+                if point_type == POINT_STONE:
+                    self.image.draw_image(STONE_IMAGE, i * TILE_SIZE, j * TILE_SIZE)
+
                 points = self.grid.get_points(i, j)
                 if points > 0:
                     power_image = render_font(PLAYGROUND_20, str(int(points)), gfs.pallet.IVORY)

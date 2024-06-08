@@ -7,11 +7,16 @@ from gfs.pallet import IVORY, DARKBLUE, DARKGREY
 
 from jam.states import MAIN_MENU
 
+from gfs.music import Music
+from gfs.sounds import OPTION_MENU_MUSIC
+
 
 class OptionMenu:
     def __init__(self, width, height):
         self.surface_configuration = (width, height)
         self.next_state = None
+
+        self.music = Music(OPTION_MENU_MUSIC)
 
         self.interface = Interface()
 
@@ -81,6 +86,8 @@ class OptionMenu:
 
     def update(self):
         self.interface.update()
+
+        self.music.update()
 
     def render(self, surface):
         surface.fill(IVORY)

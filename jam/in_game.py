@@ -22,15 +22,20 @@ from jam.level.level import Level
 from jam.level.grid import Grid
 from jam.level.rabbit import Rabbit
 from jam.level.robot import Robot
-from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT
 
 from jam.editor import Editor
+
+from gfs.music import Music
+from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND
 
 
 class InGame:
     def __init__(self, width, height):
         self.surface_configuration = (width, height)
         self.next_state = None
+
+        self.music = Music(IN_GAME_MUSIC)
 
         self.interface = Interface()
         self.editor = Editor()
@@ -50,28 +55,24 @@ class InGame:
 
         self.interface.add_gui(editor_check_box)
 
-        # tests
-
-        self.sprites = Sprites()
-        self.particle_system = ParticleSystem()
-
-        # end tests
-
-        # levels list
-
         self.levels = []
         self.current_level = None
 
-        # tests
-        grid = Grid(20, 10)
-        self.levels.append(Level(grid))
-        self.current_level = 0
         self.selector_pos = (0, 0)
 
         self.left_click = False
+        self.right_click = False
+
+        # tests
+
+        grid = Grid(6, 6, np.array([0, 0]), np.array([5, 5]))
+        self.levels.append(Level(grid))
+
+        self.current_level = 0
 
     def main_menu(self):
         self.next_state = MAIN_MENU
+        self.music.stop()
 
     def keyboard_input(self, event):
         self.interface.keyboard_input(event)
@@ -87,7 +88,29 @@ class InGame:
         if self.current_level is not None:
             self.levels[self.current_level].mouse_input(event)
 
+            if self.editor.active:
+                level = self.levels[self.current_level]
+
+                if self.selector_pos is not None:
+                    x = int(self.selector_pos[0])
+                    y = int(self.selector_pos[1])
+                    if self.left_click:
+                        if self.editor.point_type is not None:
+                            current_points = level.grid.get_points(x, y)
+                            level.grid.set_points(x, y, current_points + 1, self.editor.point_type)
+                            level.build_image()
+                    if self.right_click:
+                        current_points = int(level.grid.get_points(x, y))
+                        point_type = level.grid.get_victory_points(x, y)
+                        if current_points == 1:
+                            level.grid.set_points(x, y, 0, 0)
+                            level.build_image()
+                        else:
+                            level.grid.set_points(x, y, current_points - 1, point_type)
+                            level.build_image()
+
         self.left_click = event.type == pygame.MOUSEBUTTONDOWN and event.button == 1
+        self.right_click = event.type == pygame.MOUSEBUTTONDOWN and event.button == 3
 
         self.editor.mouse_input(event)
 
@@ -117,8 +140,7 @@ class InGame:
 
     def update(self):
         self.interface.update()
-        self.sprites.update()
-        self.particle_system.update()
+        self.music.update()
 
         if self.current_level is not None:
             level = self.levels[self.current_level]
@@ -127,10 +149,12 @@ class InGame:
             if level.grid.get_tile(level.rabbit.grid_pos[0], level.rabbit.grid_pos[1]) != level.rabbit.type:
                 level.reload()
                 self.next_state = DEFEAT_MENU
+                self.music.play_short(DEFEAT_SOUND)
 
             if level.grid.get_tile(level.robot.grid_pos[0], level.robot.grid_pos[1]) != level.robot.type:
                 level.reload()
                 self.next_state = DEFEAT_MENU
+                self.music.play_short(DEFEAT_SOUND)
 
             if self.editor.active:
                 level = self.levels[self.current_level]
@@ -142,20 +166,26 @@ class InGame:
                         if self.editor.current_type is not None:
                             level.grid.set_tile(x, y, self.editor.current_type)
                             level.build_image()
+                    if self.right_click:
+                        level.grid.set_tile(x, y, TILE_DIRT)
+                        level.build_image()
+
             else:
                 level = self.levels[self.current_level]
 
+                """
                 player_type = level.player.type
                 power = level.player.power
                 if self.selector_pos is not None:
                     x = int(self.selector_pos[0])
                     y = int(self.selector_pos[1])
                     if self.left_click:
-                        if power > 0 and level.grid.get_tile(x, y) != player_type and level.grid.end != [x, y]:
+                        if power > 0 and level.grid.get_tile(x, y) != player_type:
                             level.grid.set_tile(x, y, player_type)
                             level.build_image()
                             level.player.power = power - 1
                             level.player.build_image()
+                """
 
         self.editor.update()
 
@@ -182,6 +212,11 @@ class InGame:
                                y + current_level.robot.render_pos[
                                    1] * TILE_SIZE - current_level.robot.power_image.height)
 
+            surface.draw_image(current_level.rabbit.power_image,
+                               x + (current_level.rabbit.render_pos[0] + 1) * TILE_SIZE,
+                               y + current_level.rabbit.render_pos[
+                                   1] * TILE_SIZE - current_level.rabbit.power_image.height)
+
             # draw the sprites but move them to the right position
 
             current_level.rabbit.sprite.rect.x = x + current_level.rabbit.render_pos[0] * TILE_SIZE - TILE_SIZE // 2
@@ -198,7 +233,5 @@ class InGame:
                 surface.draw_image(SELECTOR_IMAGE, x, y)
 
         self.interface.render(surface)
-        self.sprites.render(surface)
-        self.particle_system.render(surface)
 
         self.editor.render(surface)

@@ -6,8 +6,10 @@ from gfs.image import Image
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 from gfs.pallet import DARKBLUE, RED, IVORY
 
-from jam.level.tiles import TILE_SIZE, TILE_ROAD
+from jam.level.tiles import TILE_SIZE, TILE_ROAD, POINT_STONE
 from jam.level.grid import Grid
+
+from gfs.sounds import PICKUP
 
 
 class Robot:
@@ -99,8 +101,9 @@ class Robot:
         else:
             self.velocity = (self.grid_pos - self.render_pos) * 15
 
-        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0:
+        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(self.grid_pos[0], self.grid_pos[1]) == POINT_STONE:
             self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
             self.build_image()
             self.grid.set_points_to_zero(self.grid_pos[0], self.grid_pos[1])
             self.entropy += 1
+            PICKUP.play()

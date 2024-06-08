@@ -3,11 +3,8 @@ from gfs.image import Image
 from jam.level.tiles import TILE_SIZE
 
 BACKGROUND_IMAGE_FULL = Image()
-BACKGROUND_IMAGE_FULL.load_from_file("assets/images/background.png")
-
-BACKGROUND_IMAGE_300x300 = Image()
-BACKGROUND_IMAGE_300x300.load_from_file("assets/images/background.png")
-BACKGROUND_IMAGE_300x300.resize(300, 300)
+BACKGROUND_IMAGE_FULL.load_from_file("assets/images/background.jpeg")
+BACKGROUND_IMAGE_FULL.resize(1280, 720)
 
 SELECTOR_IMAGE = Image()
 SELECTOR_IMAGE.load_from_file("assets/images/SELECT.png")
@@ -60,3 +57,11 @@ IDLE_UP.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
 IDLE_DOWN = Image()
 IDLE_DOWN.load_from_file("assets/images/idle_down.png")
 IDLE_DOWN.resize(8 * TILE_SIZE, 2 * TILE_SIZE)
+
+TREE_IMAGE = Image()
+TREE_IMAGE.load_from_file("assets/images/tree.png")
+TREE_IMAGE.resize(TILE_SIZE, TILE_SIZE)
+
+STONE_IMAGE = Image()
+STONE_IMAGE.load_from_file("assets/images/stone.png")
+STONE_IMAGE.resize(TILE_SIZE, TILE_SIZE)

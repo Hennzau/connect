@@ -7,7 +7,6 @@ from game import Game
 
 
 def main():
-    # music = Music("assets/sounds/soundtrack.mp3")
     surface = Surface(1280, 720, "Game jam!")
     clock = pygame.time.Clock()
 
@@ -28,7 +27,6 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 game.mouse_motion(event)
 
-        # music.update()
         game.update()
 
         if timer == 0:

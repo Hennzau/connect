@@ -4,11 +4,13 @@ import numpy as np
 from gfs.fonts import PLAYGROUND_20, render_font
 from gfs.pallet import IVORY
 
-from jam.level.tiles import TILE_SIZE, TILE_GRASS
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, POINT_TREE
 
 from gfs.images import JUMPING_RIGHT, JUMPING_LEFT, JUMPING_UP, JUMPING_DOWN, IDLE_RIGHT, IDLE_LEFT, IDLE_UP, IDLE_DOWN
 
 from gfs.sprite import AnimatedSprite
+
+from gfs.sounds import PICKUP, BUNNY
 
 
 class Rabbit:
@@ -99,12 +101,16 @@ class Rabbit:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 self.up = True
+                BUNNY.play()
             elif event.key == pygame.K_DOWN:
                 self.down = True
+                BUNNY.play()
             elif event.key == pygame.K_LEFT:
                 self.left = True
+                BUNNY.play()
             elif event.key == pygame.K_RIGHT:
                 self.right = True
+                BUNNY.play()
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 self.up = False
@@ -148,8 +154,10 @@ class Rabbit:
         else:
             self.velocity = (self.grid_pos - self.render_pos) * 15
 
-        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0:
+        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(
+                self.grid_pos[0], self.grid_pos[1]) == POINT_TREE:
             self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
             self.build_image()
             self.grid.set_points_to_zero(self.grid_pos[0], self.grid_pos[1])
             self.entropy += 1
+            PICKUP.play()

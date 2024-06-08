@@ -1,5 +1,6 @@
 from gfs.gui.interface import Interface
 from gfs.gui.check_box import CheckBox
+from gfs.gui.button import Button
 
 from gfs.fonts import PLAYGROUND_30
 from jam.level.tiles import TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT, POINT_STONE, POINT_TREE
@@ -43,11 +44,21 @@ class Editor:
 
         self.interface.add_gui(self.tree_check_box)
 
+        # export current_level to json
+
+        self.export_button = Button(PLAYGROUND_30, "Export Level to JSON", (900, 200), self.export_level)
+        self.has_to_export_level = False
+
+        self.interface.add_gui(self.export_button)
+
     def activate(self):
         self.active = True
 
     def deactivate(self):
         self.active = False
+
+    def export_level(self):
+        self.has_to_export_level = True
 
     def switch_to_none(self):
         self.current_type = None

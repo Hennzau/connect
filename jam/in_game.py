@@ -31,6 +31,7 @@ from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND
 
 from jam.option_menu import PLAY_MUSIC
 
+
 class InGame:
     def __init__(self, width, height):
         self.surface_configuration = (width, height)
@@ -144,6 +145,11 @@ class InGame:
 
         if PLAY_MUSIC:
             self.music.update()
+
+        if self.editor.has_to_export_level:
+            self.editor.has_to_export_level = False
+            json = self.levels[self.current_level].grid.save_to_json()
+            print(json)
 
         if self.current_level is not None:
             level = self.levels[self.current_level]

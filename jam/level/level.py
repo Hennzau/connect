@@ -51,7 +51,17 @@ class Level:
         self.sprites.update()
 
     def reload(self):
-        pass
+        self.grid.reload()
+
+        self.rabbit = Rabbit(self.grid)
+        self.robot = Robot(self.grid)
+        self.player = self.rabbit
+
+        self.build_image()
+
+        self.last_player_entropy = 0
+        self.sprites = Sprites()
+        self.sprites.add_sprite("rabbit", self.rabbit.sprite)
 
     def build_image(self):
         for i in range(self.grid.width):

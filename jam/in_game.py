@@ -137,9 +137,12 @@ class InGame:
 
         # tests
         grid = Grid(20, 10)
-        self.levels.append(Level(grid, [Player(grid, RABBIT_TYPE,np.array([0,0])),Player(grid, ROBOT_TYPE,np.array([0,4]))]))
+        self.levels.append(
+            Level(grid, [Player(grid, RABBIT_TYPE, np.array([0, 0])), Player(grid, ROBOT_TYPE, np.array([0, 4]))]))
         self.current_level = 0
         self.selector_pos = (0, 0)
+
+        self.left_click = False
 
     def main_menu(self):
         self.next_state = MAIN_MENU
@@ -156,23 +159,9 @@ class InGame:
         self.interface.mouse_input(event)
 
         if self.current_level is not None:
-            level=self.levels[self.current_level]
-            
-            level.mouse_input(event)
-            #regarder le joueur actuel s'il y en a un, regarder sa puissance, récupérer les coordonnées du selector, détercter le clic gauche, modifier la grille et rebuild l'image du level et enlever du power
-            if level.current_player is not None:
-                player=level.players[level.current_player]
-                player_type = player.type
-                power = player.power
-                if self.selector_pos is not None:
-                    x=int(self.selector_pos[0])
-                    y=int(self.selector_pos[1])
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button==1:
-                        if power>0 and level.grid.get_tile(x,y)!=player_type:
-                            level.grid.set_tile(x,y,player_type)
-                            level.build_image()
-                            player.power=power-1
+            self.levels[self.current_level].mouse_input(event)
 
+        self.left_click = event.type == pygame.MOUSEBUTTONDOWN and event.button == 1
 
         self.editor.mouse_input(event)
 
@@ -197,6 +186,32 @@ class InGame:
                 self.selector_pos = (x, y)
             else:
                 self.selector_pos = None
+
+            if self.editor.active:
+                level = self.levels[self.current_level]
+
+                if self.selector_pos is not None:
+                    x = int(self.selector_pos[0])
+                    y = int(self.selector_pos[1])
+                    if self.left_click:
+                        if self.editor.current_type is not None:
+                            level.grid.set_tile(x, y, self.editor.current_type)
+                            level.build_image()
+            else:
+                level = self.levels[self.current_level]
+
+                if level.current_player is not None:
+                    player = level.players[level.current_player]
+                    player_type = player.type
+                    power = player.power
+                    if self.selector_pos is not None:
+                        x = int(self.selector_pos[0])
+                        y = int(self.selector_pos[1])
+                        if self.left_click:
+                            if power > 0 and level.grid.get_tile(x, y) != player_type:
+                                level.grid.set_tile(x, y, player_type)
+                                level.build_image()
+                                player.power = power - 1
 
         self.editor.mouse_motion(event)
 

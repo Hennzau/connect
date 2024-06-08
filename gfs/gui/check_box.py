@@ -19,14 +19,14 @@ class CheckBox:
         self.over = False
         self.check = False
 
-        self.over_color=over_color
-        self.normal_color=normal_color
+        self.over_color = over_color
+        self.normal_color = normal_color
 
         self.text = render_font(font, text, self.normal_color)
 
         # create a rect at the right of the text, of the same height
 
-        self.rect = pygame.Rect(self.pos[0] + self.text.get_width() + self.text.get_height() // 2, self.pos[1],
+        self.rect = pygame.Rect(self.text.get_width() + self.text.get_height() // 2, 0,
                                 self.text.get_height(), self.text.get_height())
 
         self.over_image = Image(
@@ -42,6 +42,8 @@ class CheckBox:
         self.normal_image.fill(IVORY)
         self.normal_image.draw_image(self.text, 0, 0)
         self.normal_image.draw_rect(self.normal_color, self.rect)
+
+        self.rect.move(self.pos[0], self.pos[1])
 
     def keyboard_input(self, event):
         pass

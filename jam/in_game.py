@@ -48,7 +48,7 @@ class InGame:
         self.interface.add_gui(main_menu_button)
 
         #check box
-        check_box = CheckBox(MOTO_MANGUCODE_50, "", (0, 0), self.main_menu)
+        #check_box = CheckBox(PLAYGROUND_50, "", (0, 0), self.main_menu)
 
         # tests
 

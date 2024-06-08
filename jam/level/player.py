@@ -11,11 +11,13 @@ ROBOT_TYPE = 1
 
 
 class Player:
-    def __init__(self, grid, type):
+    def __init__(self, grid, player_type):
         self.image = Image(TILE_SIZE, TILE_SIZE)
         self.image.fill((255, 0, 0))
         self.grid = grid
-        self.type = type
+        self.type = player_type
+
+        self.power = 0
 
         self.grid_pos = np.array([0, 0])
 

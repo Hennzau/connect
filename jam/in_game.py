@@ -4,7 +4,7 @@ import numpy as np
 from gfs.gui.interface import Interface
 from gfs.gui.button import Button
 
-from gfs.fonts import MOTO_MANGUCODE_50
+from gfs.fonts import PLAYGROUND_50
 from gfs.pallet import DARKBLUE, RED, IVORY
 from gfs.images import SELECTOR_IMAGE
 
@@ -29,7 +29,7 @@ class InGame:
 
         self.interface = Interface()
 
-        main_menu_button = Button(MOTO_MANGUCODE_50, "Go to main menu", (0, 0), self.main_menu)
+        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
         y = height - main_menu_button.normal_image.get_height() * 2

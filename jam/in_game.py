@@ -102,8 +102,11 @@ class InGame:
 
             # draw selector
 
-            x = current_level.selector_pos[0] * TILE_SIZE
-            y = current_level.selector_pos[1] * TILE_SIZE
+            gap_x = x % TILE_SIZE
+            gap_y = y % TILE_SIZE
+
+            x = current_level.selector_pos[0] * TILE_SIZE + gap_x
+            y = current_level.selector_pos[1] * TILE_SIZE + gap_y
 
             surface.draw_image(SELECTOR_IMAGE, x, y)
 

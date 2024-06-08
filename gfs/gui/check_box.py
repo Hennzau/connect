@@ -23,16 +23,22 @@ class CheckBox:
 
         # create a rect at the right of the text, of the same height
 
-        self.rect = pygame.Rect(self.pos[0] + self.text.get_width() + self.text.get_height(), self.pos[1],
+        self.rect = pygame.Rect(self.pos[0] + self.text.get_width() + self.text.get_height() // 2, self.pos[1],
                                 self.text.get_height(), self.text.get_height())
 
-        self.over_image = Image(self.rect.width, self.rect.height)
-        self.over_image.fill(DARKBLUE)
+        self.over_image = Image(
+            self.text.get_width() + self.rect.height // 2 + self.rect.height,
+            self.rect.height)
+        self.over_image.fill(IVORY)
         self.over_image.draw_image(self.text, 0, 0)
+        self.over_image.draw_rect(DARKBLUE, self.rect)
 
-        self.normal_image = Image(self.rect.width, self.rect.height)
-        self.normal_image.fill(DARKGREY)
+        self.normal_image = Image(
+            self.text.get_width() + self.rect.height // 2 + self.rect.height,
+            self.rect.height)
+        self.normal_image.fill(IVORY)
         self.normal_image.draw_image(self.text, 0, 0)
+        self.normal_image.draw_rect(DARKGREY, self.rect)
 
     def keyboard_input(self, event):
         pass
@@ -51,8 +57,8 @@ class CheckBox:
         self.over = self.rect.collidepoint(event.pos)
 
     def update(self):
-        self.rect = self.text.get_rect()
-        self.rect = self.rect.move(self.pos[0], self.pos[1])
+        self.rect = pygame.Rect(self.pos[0] + self.text.get_width() + self.text.get_height() // 2, self.pos[1],
+                                self.text.get_height(), self.text.get_height())
 
     def render(self, surface):
         if self.over or self.check:

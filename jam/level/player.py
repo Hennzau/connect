@@ -3,6 +3,9 @@ import numpy as np
 
 from gfs.image import Image
 
+from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
+from gfs.pallet import DARKBLUE, RED, IVORY
+
 from jam.level.tiles import TILE_SIZE
 from jam.level.grid import Grid
 
@@ -22,6 +25,7 @@ class Player:
         
 
         self.power = 5
+        self.power_image = render_font(PLAYGROUND_20,str(int(self.power)),IVORY)
 
         self.grid_pos = grid_pos
 
@@ -57,6 +61,8 @@ class Player:
             elif event.key == pygame.K_RIGHT:
                 self.move_right()
             
+    def build_image(self):
+        self.power_image = render_font(PLAYGROUND_20,str(int(self.power)),IVORY)
 
     def update(self):
         self.render_pos += self.velocity * (1 / 60)
@@ -64,4 +70,5 @@ class Player:
 
         if self.grid.get_points(self.grid_pos[0],self.grid_pos[1])>0:
             self.power+=self.grid.get_points(self.grid_pos[0],self.grid_pos[1])
+            self.build_image()
             self.grid.set_points_to_zero(self.grid_pos[0],self.grid_pos[1])

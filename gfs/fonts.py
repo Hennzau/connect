@@ -12,6 +12,7 @@ BULLET_TRACE_30 = pygame.font.Font("assets/fonts/BulletTrace7-rppO.ttf", 30)
 PLAYGROUND_100 = pygame.font.Font("assets/fonts/Playground.ttf", 100)
 PLAYGROUND_50 = pygame.font.Font("assets/fonts/Playground.ttf", 50)
 PLAYGROUND_30 = pygame.font.Font("assets/fonts/Playground.ttf", 30)
+PLAYGROUND_20 = pygame.font.Font("assets/fonts/Playground.ttf", 20)
 PLAYGROUND_10 = pygame.font.Font("assets/fonts/Playground.ttf", 10)
 
 

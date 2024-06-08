@@ -13,6 +13,7 @@ from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
 
 from jam.states import MAIN_MENU
+from jam.states import DEFEAT_MENU
 
 from gfs.effects.particle_system import ParticleSystem
 from gfs.effects.point_particle import PointParticle
@@ -195,7 +196,11 @@ class InGame:
         self.particle_system.update()
 
         if self.current_level is not None:
-            self.levels[self.current_level].update()
+            level=self.levels[self.current_level]
+            level.update()
+            for player in level.players:
+                if level.grid.get_tile(player.grid_pos[0],player.grid_pos[1])!=player.type:
+                    self.next_state=DEFEAT_MENU
 
             if self.editor.active:
                 level = self.levels[self.current_level]
@@ -218,7 +223,7 @@ class InGame:
                         x = int(self.selector_pos[0])
                         y = int(self.selector_pos[1])
                         if self.left_click:
-                            if power > 0 and level.grid.get_tile(x, y) != player_type:
+                            if power > 0 and level.grid.get_tile(x, y) != player_type and level.grid.end!=[x,y]:
                                 level.grid.set_tile(x, y, player_type)
                                 level.build_image()
                                 player.power = power - 1

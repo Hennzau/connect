@@ -1,6 +1,7 @@
 from gfs.image import Image
 import gfs.pallet
 from jam.level.tiles import TILE_SIZE,TILE_GREEN, TILE_GREY, TILE_WALL
+from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 import pygame
 
 
@@ -14,6 +15,8 @@ class Level:
         self.current_player = 0
 
         self.build_image()
+        
+        self.last_player_entropy=0
 
     def keyboard_input(self, event):
         if self.current_player is not None:
@@ -21,6 +24,7 @@ class Level:
 
             if event.type == pygame.KEYDOWN and event.key==pygame.K_SPACE:
                 self.current_player=(self.current_player+1)%len(self.players)
+                self.last_player_entropy=self.players[self.current_player].entropy
 
     def mouse_motion(self, event):
         pass
@@ -31,6 +35,11 @@ class Level:
     def update(self):
         for player in self.players:
             player.update()
+        if self.current_player is not None :
+            if self.last_player_entropy != self.players[self.current_player].entropy:
+                self.build_image()
+                self.last_player_entropy=self.players[self.current_player].entropy
+
 
     def build_image(self):
         for i in range (self.grid.width):
@@ -42,5 +51,10 @@ class Level:
                     self.image.draw_rect(gfs.pallet.GREEN,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
                 if type == TILE_WALL:
                     self.image.draw_rect(gfs.pallet.VOLKSWAGEN_TAUPE,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
-
+                points=self.grid.get_points(i,j)
+                if points>0:
+                    self.power_image = render_font(PLAYGROUND_20,str(int(points)),gfs.pallet.IVORY)
+                    self.image.draw_image(self.power_image,i*TILE_SIZE+(TILE_SIZE-self.power_image.get_width())/2,j*TILE_SIZE+(TILE_SIZE-self.power_image.get_height())/2)
+                if [i,j]==self.grid.end:
+                    self.image.draw_rect(gfs.pallet.BLACK,pygame.Rect(i*TILE_SIZE,j*TILE_SIZE,TILE_SIZE,TILE_SIZE))
 

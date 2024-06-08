@@ -13,6 +13,7 @@ class Grid:
         self.tiles[0,0]=TILE_GREEN
         self.points=np.zeros((width,height))
         self.points[0,3]=2
+        self.end=[width-1,height-1]
 
     def get_tile(self, x, y):
         return self.tiles[x,y]

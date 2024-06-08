@@ -32,23 +32,57 @@ class Player:
         self.render_pos = np.array([grid_pos[0], grid_pos[1]], dtype=float)
         self.velocity = np.array([0, 0], dtype=float)
 
+        self.entropy=0
+
     def move_up(self):
-        if self.grid_pos[1] - 1 >= 0 and self.type == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
+        if [self.grid_pos[0],self.grid_pos[1]-1]==self.grid.end:
             self.grid_pos[1] -= 1
+        elif self.grid_pos[1] - 1 >= 0 and self.type == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
+            self.grid_pos[1] -= 1
+        elif self.grid_pos[1] - 1 >= 0 and self.type != self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1) and self.power>0 :
+            self.grid_pos[1] -= 1
+            self.power-=1
+            self.build_image()
+            self.grid.set_tile(self.grid_pos[0],self.grid_pos[1],self.type)
+            self.entropy+=1
 
     def move_down(self):
-        if self.grid_pos[1] + 1 < self.grid.height and self.type == self.grid.get_tile(self.grid_pos[0],
+        if [self.grid_pos[0],self.grid_pos[1]+1]==self.grid.end:
+            self.grid_pos[1] += 1
+        elif self.grid_pos[1] + 1 < self.grid.height and self.type == self.grid.get_tile(self.grid_pos[0],
                                                                                        self.grid_pos[1] + 1):
             self.grid_pos[1] += 1
+        elif self.grid_pos[1] + 1 < self.grid.height and self.type != self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1) and self.power>0 :
+            self.grid_pos[1] += 1
+            self.power-=1
+            self.build_image()
+            self.grid.set_tile(self.grid_pos[0],self.grid_pos[1],self.type)
+            self.entropy+=1
 
     def move_left(self):
-        if self.grid_pos[0] - 1 >= 0 and self.type == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
+        if [self.grid_pos[0]-1,self.grid_pos[1]]==self.grid.end:
             self.grid_pos[0] -= 1
+        elif self.grid_pos[0] - 1 >= 0 and self.type == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
+            self.grid_pos[0] -= 1
+        elif self.grid_pos[0] - 1 >= 0 and self.type != self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1]) and self.power>0 :
+            self.grid_pos[0] -= 1
+            self.power-=1
+            self.build_image()
+            self.grid.set_tile(self.grid_pos[0],self.grid_pos[1],self.type)
+            self.entropy+=1
 
     def move_right(self):
-        if self.grid_pos[0] + 1 < self.grid.width and self.type == self.grid.get_tile(
+        if [self.grid_pos[0]+1,self.grid_pos[1]]==self.grid.end:
+            self.grid_pos[0] += 1
+        elif self.grid_pos[0] + 1 < self.grid.width and self.type == self.grid.get_tile(
                 self.grid_pos[0] + 1, self.grid_pos[1]):
             self.grid_pos[0] += 1
+        elif self.grid_pos[0] + 1 < self.grid.width and self.type != self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1]) and self.power>0 :
+            self.grid_pos[0] += 1
+            self.power-=1
+            self.build_image()
+            self.grid.set_tile(self.grid_pos[0],self.grid_pos[1],self.type)
+            self.entropy+=1
 
     def keyboard_input(self, event):
         if event.type == pygame.KEYDOWN:
@@ -72,3 +106,4 @@ class Player:
             self.power+=self.grid.get_points(self.grid_pos[0],self.grid_pos[1])
             self.build_image()
             self.grid.set_points_to_zero(self.grid_pos[0],self.grid_pos[1])
+            self.entropy+=1

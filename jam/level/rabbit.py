@@ -4,7 +4,7 @@ import numpy as np
 from gfs.fonts import PLAYGROUND_20, render_font
 from gfs.pallet import IVORY
 
-from jam.level.tiles import TILE_SIZE, TILE_GRASS, POINT_TREE
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, POINT_TREE, TILE_WATER
 
 from gfs.images import JUMPING_RIGHT, JUMPING_LEFT, JUMPING_UP, JUMPING_DOWN, IDLE_RIGHT, IDLE_LEFT, IDLE_UP, IDLE_DOWN
 
@@ -50,10 +50,10 @@ class Rabbit:
         self.timer = 0.0
 
     def move_up(self):
-        if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1):
+        if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1) and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
             self.grid_pos[1] -= 1
         elif self.grid_pos[1] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
-                                                                            self.grid_pos[1] - 1) and self.power > 0:
+                                                                            self.grid_pos[1] - 1) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
             self.grid_pos[1] -= 1
             self.power -= 1
             self.build_image()
@@ -62,11 +62,11 @@ class Rabbit:
 
     def move_down(self):
         if self.grid_pos[1] + 1 < self.grid.height and TILE_GRASS == self.grid.get_tile(self.grid_pos[0],
-                                                                                        self.grid_pos[1] + 1):
+                                                                                        self.grid_pos[1] + 1)and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1)==TILE_WATER:
             self.grid_pos[1] += 1
         elif self.grid_pos[1] + 1 < self.grid.height and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
                                                                                           self.grid_pos[
-                                                                                              1] + 1) and self.power > 0:
+                                                                                              1] + 1) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1)==TILE_WATER:
             self.grid_pos[1] += 1
             self.power -= 1
             self.build_image()
@@ -74,10 +74,10 @@ class Rabbit:
             self.entropy += 1
 
     def move_left(self):
-        if self.grid_pos[0] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]):
+        if self.grid_pos[0] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]) and not self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1])==TILE_WATER:
             self.grid_pos[0] -= 1
         elif self.grid_pos[0] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] - 1,
-                                                                            self.grid_pos[1]) and self.power > 0:
+                                                                            self.grid_pos[1]) and self.power > 0and not self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1])==TILE_WATER:
             self.grid_pos[0] -= 1
             self.power -= 1
             self.build_image()
@@ -86,11 +86,11 @@ class Rabbit:
 
     def move_right(self):
         if self.grid_pos[0] + 1 < self.grid.width and TILE_GRASS == self.grid.get_tile(
-                self.grid_pos[0] + 1, self.grid_pos[1]):
+                self.grid_pos[0] + 1, self.grid_pos[1])and not self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1])==TILE_WATER:
             self.grid_pos[0] += 1
         elif self.grid_pos[0] + 1 < self.grid.width and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] + 1,
                                                                                          self.grid_pos[
-                                                                                             1]) and self.power > 0:
+                                                                                             1]) and self.power > 0and not self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1])==TILE_WATER:
             self.grid_pos[0] += 1
             self.power -= 1
             self.build_image()

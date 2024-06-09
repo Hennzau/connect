@@ -28,6 +28,8 @@ class Rabbit:
         self.entropy = 0
 
         self.type = TILE_GRASS
+        self.level0=False
+
 
         self.sprite = AnimatedSprite(0, 0, TILE_SIZE, TILE_SIZE, {
             "jump_right": (4, JUMPING_RIGHT),
@@ -48,6 +50,7 @@ class Rabbit:
         self.right = False
 
         self.timer = 0.0
+        # dans rabbit créer un bool Level0 ou pas : si Level0, on consomme pas les points, on a 0 power
 
     def move_up(self):
         if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1) and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
@@ -154,10 +157,14 @@ class Rabbit:
         else:
             self.velocity = (self.grid_pos - self.render_pos) * 15
 
-        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(
-                self.grid_pos[0], self.grid_pos[1]) == POINT_TREE:
-            self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
-            self.build_image()
-            self.grid.set_points_to_zero(self.grid_pos[0], self.grid_pos[1])
-            self.entropy += 1
-            PICKUP.play()
+        if self.level0==False :
+            if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(
+                    self.grid_pos[0], self.grid_pos[1]) == POINT_TREE:
+                self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
+                self.build_image()
+                self.grid.set_points_to_zero(self.grid_pos[0], self.grid_pos[1])
+                self.entropy += 1
+                PICKUP.play()
+
+        if self.level0==True :
+            self.power=0

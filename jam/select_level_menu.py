@@ -13,6 +13,19 @@ from jam.option_menu import PLAY_MUSIC
 
 from gfs.images import BACKGROUND_IMAGE_FULL
 
+import pygame
+
+from jam.level.grid import Grid
+
+
+from jam.level.level import Level
+from jam.level.grid import Grid
+from jam.level.rabbit import Rabbit
+from jam.level.robot import Robot
+from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT
+
+import numpy as np
+
 
 class SelectLevelMenu:
     def __init__(self, width, height):
@@ -24,14 +37,7 @@ class SelectLevelMenu:
 
         self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
 
-        game_button = Button(PLAYGROUND_50, "Go to game", (0, 0), self.in_game, GREEN, LIGHTGREEN)
-
-        x = (width - game_button.normal_image.get_width()) // 2
-        y = height // 3 - game_button.normal_image.get_height() // 2
-
-        game_button.pos = (x, y + self.game_name.get_height() * 2)
-
-        self.interface.add_gui(game_button)
+       
 
         main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
 
@@ -42,6 +48,22 @@ class SelectLevelMenu:
 
         self.interface.add_gui(main_menu_button)
 
+        self.levels = []
+        self.current_level = None
+
+
+        # tests
+
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_0.json")
+
+        self.levels.append(Level(grid))
+        self.levels[0].rabbit.level0=True
+        self.levels[0].robot.level0=True
+
+        self.current_level = 0
+
+
     def in_game(self):
         self.next_state = IN_GAME
         self.music.stop()
@@ -49,17 +71,40 @@ class SelectLevelMenu:
     def main_menu(self):
         self.next_state = MAIN_MENU
 
-    def keyboard_input(self, event):
+    def keyboard_input(self, event, game):
         self.interface.keyboard_input(event)
+
+        if self.current_level is not None:
+            self.levels[self.current_level].keyboard_input(event)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                pos=self.levels[0].rabbit.grid_pos
+                points=self.levels[0].grid.get_points(pos[0],pos[1])
+                if points>0:
+                    game.current_level = points
+                    self.next_state=IN_GAME
+
 
     def mouse_input(self, event):
         self.interface.mouse_input(event)
 
+        if self.current_level is not None:
+            self.levels[self.current_level].mouse_input(event)
+
+
     def mouse_motion(self, event):
         self.interface.mouse_motion(event)
+        if self.current_level is not None:
+            self.levels[self.current_level].mouse_motion(event)
+
 
     def update(self):
         self.interface.update()
+
+        if self.current_level is not None:
+            level = self.levels[self.current_level]
+            level.update()
 
         if PLAY_MUSIC:
             self.music.update()
@@ -68,9 +113,21 @@ class SelectLevelMenu:
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
         self.interface.render(surface)
 
-        # center the game name : middle, but first third height
 
-        x = (surface.get_width() - self.game_name.get_width()) // 2
-        y = surface.get_height() // 3 - self.game_name.get_height() // 2
+        if self.current_level is not None:
+            current_level = self.levels[self.current_level]
 
-        surface.draw_image(self.game_name, x, y)
+            # center the level image on the surface, and draw a frame around it
+
+            x = (surface.get_width() - current_level.image.get_width()) / 2
+            y = (surface.get_height() - current_level.image.get_height()) / 2
+
+            surface.draw_rect(DARKBLUE, pygame.Rect(
+                x - 5, y - 5, current_level.image.get_width() + 10, current_level.image.get_height() + 10))
+
+            surface.draw_image(current_level.image, x, y)
+
+            current_level.rabbit.sprite.rect.x = x + current_level.rabbit.render_pos[0] * TILE_SIZE - TILE_SIZE // 2
+            current_level.rabbit.sprite.rect.y = y + current_level.rabbit.render_pos[1] * TILE_SIZE - TILE_SIZE // 2
+
+            current_level.sprites.render(surface)

@@ -30,6 +30,9 @@ WHITE_POINT_5.fill((255, 255, 255))
 WHITE_POINT_3 = Image(3, 3)
 WHITE_POINT_3.fill((255, 255, 255))
 
+WHITE_POINT_1 = Image(1, 1)
+WHITE_POINT_1.fill((255, 255, 255))
+
 BLACK_POINT_5 = Image(5, 5)
 BLACK_POINT_5.fill((0, 0, 0))
 

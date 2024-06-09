@@ -19,7 +19,7 @@ from jam.states import MAIN_MENU
 from jam.states import DEFEAT_MENU, VICTORY_MENU, LEVEL_SELECTION, CUSTOM_LEVEL_SELECTION
 
 from gfs.effects.particle_system import ParticleSystem
-from gfs.effects.particles import RED_POINT_5
+from gfs.effects.particles import RED_POINT_5, YELLOW_POINT_3
 
 from jam.level.level import Level
 from jam.level.grid import Grid
@@ -258,6 +258,21 @@ class InGame:
     def update(self, option_menu):
         self.interface.update()
         self.particle_system.update()
+        if self.levels[self.current_level].change_character :
+            particles = []
+            x = (self.surface_configuration[0] - self.levels[self.current_level].image.get_width()) / 2
+            y = (self.surface_configuration[1] - self.levels[self.current_level].image.get_height()) / 2
+
+            for i in range(100):
+                particles.append(PointParticle(
+                    (x + self.levels[self.current_level].player.grid_pos[0] * TILE_SIZE + TILE_SIZE // 2 + 20 * np.sin((2 * 3.14 * i) / 100),
+                        y + self.levels[self.current_level].player.grid_pos[1] * TILE_SIZE + TILE_SIZE // 2 + 20 * np.cos((2 * 3.14 * i) / 100) ),
+                    (np.random.randint(10)-5,
+                       np.random.randint(10)-5),
+                    np.random.randint(80) / 100))
+                
+            self.particle_system.add("WHITE_POINT_1", particles)
+            self.levels[self.current_level].change_character=False
 
         if option_menu.play_music:
             self.music.update()

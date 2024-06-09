@@ -74,7 +74,7 @@ class InGame:
         self.interface.add_gui(reload_button)
 
         # check box
-        self.editor_check_box = CheckBox(PLAYGROUND_30, "Editor Enabled/Disabled", (0, 20), self.editor.activate,
+        self.editor_check_box = CheckBox(PLAYGROUND_30, "Editor Enabled/Disabled", (50, 20), self.editor.activate,
                                          self.editor.deactivate, GREEN, LIGHTGREEN)
 
         self.interface.add_gui(self.editor_check_box)

@@ -225,8 +225,6 @@ class InGame:
 
             surface.draw_image(current_level.image, x, y)
 
-            surface.draw_image(current_level.robot.image, x + current_level.robot.render_pos[0] * TILE_SIZE,
-                               y + current_level.robot.render_pos[1] * TILE_SIZE)
             surface.draw_image(current_level.robot.power_image,
                                x + (current_level.robot.render_pos[0] + 1) * TILE_SIZE,
                                y + current_level.robot.render_pos[

@@ -72,7 +72,36 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-        self.current_level = 0
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_1.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_2.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_3.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_4.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_5.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_6.json")
+
+        self.levels.append(Level(grid))
+
 
     def main_menu(self):
         self.next_state = MAIN_MENU

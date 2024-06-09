@@ -8,7 +8,6 @@ from gfs.pallet import IVORY, DARKBLUE, DARKGREY, VOLKSWAGEN_TAUPE
 
 from gfs.sounds import HUD
 
-
 class Button:
     def __init__(self, font, text, pos, function, normal_color=DARKGREY, over_color=DARKBLUE):
         self.text = text

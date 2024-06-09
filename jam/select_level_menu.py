@@ -2,12 +2,16 @@ from gfs.gui.interface import Interface
 from gfs.gui.button import Button
 
 from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, render_font
-from gfs.pallet import IVORY, DARKBLUE
+from gfs.pallet import IVORY, DARKBLUE, GREEN, LIGHTGREEN
 
-from jam.states import IN_GAME, OPTION_MENU
+from jam.states import IN_GAME, MAIN_MENU
 
 from gfs.music import Music
 from gfs.sounds import MAIN_MENU_MUSIC
+
+from jam.option_menu import PLAY_MUSIC
+
+from gfs.images import BACKGROUND_IMAGE_FULL
 
 
 class SelectLevelMenu:
@@ -18,9 +22,9 @@ class SelectLevelMenu:
 
         self.interface = Interface()
 
-        self.game_name = render_font(PLAYGROUND_100, "Expand", DARKBLUE)
+        self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
 
-        game_button = Button(PLAYGROUND_50, "Go to game", (0, 0), self.in_game)
+        game_button = Button(PLAYGROUND_50, "Go to game", (0, 0), self.in_game, GREEN, LIGHTGREEN)
 
         x = (width - game_button.normal_image.get_width()) // 2
         y = height // 3 - game_button.normal_image.get_height() // 2
@@ -29,7 +33,7 @@ class SelectLevelMenu:
 
         self.interface.add_gui(game_button)
 
-        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
+        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
         y = height - main_menu_button.normal_image.get_height() * 2
@@ -43,7 +47,7 @@ class SelectLevelMenu:
         self.music.stop()
 
     def main_menu(self):
-        self.next_state = OPTION_MENU
+        self.next_state = MAIN_MENU
 
     def keyboard_input(self, event):
         self.interface.keyboard_input(event)
@@ -57,10 +61,11 @@ class SelectLevelMenu:
     def update(self):
         self.interface.update()
 
-        self.music.update()
+        if PLAY_MUSIC:
+            self.music.update()
 
     def render(self, surface):
-        surface.fill(IVORY)
+        surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
         self.interface.render(surface)
 
         # center the game name : middle, but first third height

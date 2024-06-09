@@ -4,12 +4,14 @@ from gfs.gui.button import Button
 from gfs.images import BACKGROUND_IMAGE_FULL
 
 from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, render_font
-from gfs.pallet import IVORY, DARKBLUE, GREEN, DARKGREY
+from gfs.pallet import IVORY, DARKBLUE, GREEN, DARKGREY, LIGHTGREEN
 
 from jam.states import IN_GAME, OPTION_MENU, LEVEL_SELECTION
 
 from gfs.music import Music
 from gfs.sounds import MAIN_MENU_MUSIC
+
+from jam.option_menu import PLAY_MUSIC
 
 
 class MainMenu:
@@ -23,7 +25,7 @@ class MainMenu:
 
         self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
 
-        game_button = Button(PLAYGROUND_50, "Select a level", (0, 0), self.select_level, GREEN, DARKGREY)
+        game_button = Button(PLAYGROUND_50, "Select a level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
 
         x = (width - game_button.normal_image.get_width()) // 2
         y = height // 3 - game_button.normal_image.get_height() // 2
@@ -32,7 +34,7 @@ class MainMenu:
 
         self.interface.add_gui(game_button)
 
-        option_button = Button(PLAYGROUND_50, "Go to options", (0, 0), self.option_menu, GREEN, DARKGREY)
+        option_button = Button(PLAYGROUND_50, "Go to options", (0, 0), self.option_menu, GREEN, LIGHTGREEN)
 
         x = (width - option_button.normal_image.get_width()) // 2
         y = height // 3 - option_button.normal_image.get_height() // 2
@@ -59,7 +61,8 @@ class MainMenu:
     def update(self):
         self.interface.update()
 
-        self.music.update()
+        if PLAY_MUSIC:
+            self.music.update()
 
     def render(self, surface):
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)

@@ -6,8 +6,8 @@ from gfs.gui.button import Button
 from gfs.gui.check_box import CheckBox
 
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30
-from gfs.pallet import DARKBLUE, RED, IVORY
-from gfs.images import SELECTOR_IMAGE, JUMPING_RIGHT
+from gfs.pallet import DARKBLUE, RED, IVORY, GREEN, LIGHTGREEN
+from gfs.images import SELECTOR_IMAGE, JUMPING_RIGHT, BACKGROUND_IMAGE_FULL
 
 from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
@@ -29,6 +29,8 @@ from jam.editor import Editor
 from gfs.music import Music
 from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND
 
+from jam.option_menu import PLAY_MUSIC
+
 
 class InGame:
     def __init__(self, width, height):
@@ -40,7 +42,7 @@ class InGame:
         self.interface = Interface()
         self.editor = Editor()
 
-        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
+        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
         y = height - main_menu_button.normal_image.get_height() * 2
@@ -51,7 +53,7 @@ class InGame:
 
         # check box
         editor_check_box = CheckBox(PLAYGROUND_30, "Editor Enabled/Disabled", (0, 20), self.editor.activate,
-                                    self.editor.deactivate)
+                                    self.editor.deactivate, GREEN, LIGHTGREEN)
 
         self.interface.add_gui(editor_check_box)
 
@@ -65,7 +67,9 @@ class InGame:
 
         # tests
 
-        grid = Grid(6, 6, np.array([0, 0]), np.array([5, 5]))
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/levels/level_0.json")
+
         self.levels.append(Level(grid))
 
         self.current_level = 0
@@ -98,6 +102,17 @@ class InGame:
                         if self.editor.point_type is not None:
                             current_points = level.grid.get_points(x, y)
                             level.grid.set_points(x, y, current_points + 1, self.editor.point_type)
+                            level.build_image()
+                        if self.editor.start is not None:
+                            if self.editor.start == "rabbit":
+                                level.grid.rabbit_start = np.array([x, y])
+                                level.grid.set_tile(x, y, TILE_GRASS)
+                                level.rabbit.grid_pos = np.array([x, y])
+                            if self.editor.start == "robot":
+                                level.grid.robot_start = np.array([x, y])
+                                level.grid.set_tile(x, y, TILE_ROAD)
+                                level.robot.grid_pos = np.array([x, y])
+
                             level.build_image()
                     if self.right_click:
                         current_points = int(level.grid.get_points(x, y))
@@ -140,7 +155,14 @@ class InGame:
 
     def update(self):
         self.interface.update()
-        self.music.update()
+
+        if PLAY_MUSIC:
+            self.music.update()
+
+        if self.editor.has_to_export_level:
+            self.editor.has_to_export_level = False
+            json = self.levels[self.current_level].grid.save_to_json()
+            print(json)
 
         if self.current_level is not None:
             level = self.levels[self.current_level]
@@ -173,7 +195,6 @@ class InGame:
             else:
                 level = self.levels[self.current_level]
 
-                """
                 player_type = level.player.type
                 power = level.player.power
                 if self.selector_pos is not None:
@@ -185,12 +206,11 @@ class InGame:
                             level.build_image()
                             level.player.power = power - 1
                             level.player.build_image()
-                """
 
         self.editor.update()
 
     def render(self, surface):
-        surface.fill(IVORY)
+        surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
 
         if self.current_level is not None:
             current_level = self.levels[self.current_level]

@@ -29,9 +29,6 @@ def main():
 
         game.update()
 
-        if timer == 0:
-            print("Game running at ", int(clock.get_fps()), " fps")
-
         surface.clear((0, 0, 0))
 
         game.render(surface)

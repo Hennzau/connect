@@ -72,8 +72,6 @@ class Level:
             victory_points = [(x, y) for x, y in victory_points]
             victory_robot = check_victory(tile_road_grid, victory_points)
 
-            print(tile_road_grid, victory_points)
-
             if victory_rabbit and victory_robot:
                 self.victory = True
 

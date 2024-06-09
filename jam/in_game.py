@@ -5,6 +5,9 @@ from gfs.gui.interface import Interface
 from gfs.gui.button import Button
 from gfs.gui.check_box import CheckBox
 
+from gfs.effects.particle_system import ParticleSystem
+from gfs.effects.point_particle import PointParticle
+
 from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30
 from gfs.pallet import DARKBLUE, RED, IVORY, GREEN, LIGHTGREEN
 from gfs.images import SELECTOR_IMAGE, JUMPING_RIGHT, BACKGROUND_IMAGE_FULL
@@ -16,7 +19,7 @@ from jam.states import MAIN_MENU
 from jam.states import DEFEAT_MENU, VICTORY_MENU
 
 from gfs.effects.particle_system import ParticleSystem
-from gfs.effects.point_particle import PointParticle
+from gfs.effects.particles import RED_POINT_5
 
 from jam.level.level import Level
 from jam.level.grid import Grid
@@ -65,6 +68,8 @@ class InGame:
         self.left_click = False
         self.right_click = False
 
+        self.particle_system = ParticleSystem()
+
         # tests
 
         grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
@@ -87,20 +92,23 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid = Grid(7, 10, np.array([0, 0]), np.array([3, 5]), 5, 5)
         grid.load_from_json("assets/levels/level_4.json")
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]), 10, 10)
         grid.load_from_json("assets/levels/level_5.json")
 
         self.levels.append(Level(grid))
 
         grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
-        grid.load_from_json("assets/levels/level_6.json")
+        #grid.load_from_json("assets/levels/level_6.json")
 
         self.levels.append(Level(grid))
+
+        self.victory_timer = 0.0
+        self.defeat_timer = 0.0
 
     def main_menu(self):
         self.next_state = MAIN_MENU
@@ -185,6 +193,7 @@ class InGame:
 
     def update(self):
         self.interface.update()
+        self.particle_system.update()
 
         if PLAY_MUSIC:
             self.music.update()
@@ -199,21 +208,43 @@ class InGame:
             level.update()
 
             if not self.editor.active:
-                if level.grid.get_tile(level.rabbit.grid_pos[0], level.rabbit.grid_pos[1]) != level.rabbit.type:
-                    level.reload()
-                    self.next_state = DEFEAT_MENU
-                    self.music.play_short(DEFEAT_SOUND)
+                if level.grid.get_tile(level.rabbit.grid_pos[0],
+                                       level.rabbit.grid_pos[1]) != level.rabbit.type or level.grid.get_tile(
+                    level.robot.grid_pos[0], level.robot.grid_pos[1]) != level.robot.type or self.defeat_timer > 0.0:
+                    if self.defeat_timer == 0.0:
+                        self.music.play_short(DEFEAT_SOUND)
+                        particles = []
+                        x = (self.surface_configuration[0] - level.image.get_width()) / 2
+                        y = (self.surface_configuration[1] - level.image.get_height()) / 2
 
-                if level.grid.get_tile(level.robot.grid_pos[0], level.robot.grid_pos[1]) != level.robot.type:
-                    level.reload()
-                    self.next_state = DEFEAT_MENU
-                    self.music.play_short(DEFEAT_SOUND)
+                        for i in range(100):
+                            particles.append(PointParticle(
+                                (x + level.player.grid_pos[0] * TILE_SIZE + TILE_SIZE // 2,
+                                 y + level.player.grid_pos[1] * TILE_SIZE + TILE_SIZE // 2),
+                                (np.random.randint(100) * np.sin((2 * 3.14 * i) / 100),
+                                 np.random.randint(100) * np.cos((2 * 3.14 * i) / 100)),
+                                np.random.randint(50) / 100))
 
-                if level.victory:
-                    level.victory = False
-                    level.reload()
-                    self.next_state = VICTORY_MENU
-                    self.music.play_short(VICTORY_SOUND)
+                        self.particle_system.add("RED_POINT_5", particles)
+
+                    self.defeat_timer += 1.0 / 60.0
+
+                    if self.defeat_timer > 0.5:
+                        self.defeat_timer = 0.0
+                        level.reload()
+                        self.next_state = DEFEAT_MENU
+
+                if level.victory or self.victory_timer > 0.0:
+                    if self.victory_timer == 0.0:
+                        self.music.play_short(VICTORY_SOUND)
+
+                    self.victory_timer += 1.0 / 60.0
+                    if self.victory_timer > 0.5:
+                        self.victory_timer = 0.0
+
+                        level.victory = False
+                        level.reload()
+                        self.next_state = VICTORY_MENU
 
             if self.editor.active:
                 level = self.levels[self.current_level]
@@ -278,3 +309,4 @@ class InGame:
         self.interface.render(surface)
 
         self.editor.render(surface)
+        self.particle_system.render(surface)

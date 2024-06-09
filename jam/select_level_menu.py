@@ -46,9 +46,6 @@ class SelectLevelMenu:
         self.interface.add_gui(main_menu_button)
 
         self.levels = []
-        self.current_level = None
-
-        # tests
 
         grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
         grid.load_from_json("assets/levels/level_0.json")
@@ -79,6 +76,7 @@ class SelectLevelMenu:
                 if points > 0:
                     game.current_level = points
                     self.next_state = IN_GAME
+                    self.music.stop()
 
     def mouse_input(self, event):
         self.interface.mouse_input(event)

@@ -63,7 +63,7 @@ TREE_IMAGE.load_from_file("assets/images/tree.png")
 TREE_IMAGE.resize(TILE_SIZE, TILE_SIZE)
 
 STONE_IMAGE = Image()
-STONE_IMAGE.load_from_file("assets/images/stone.png")
+STONE_IMAGE.load_from_file("assets/images/house.png")
 STONE_IMAGE.resize(TILE_SIZE, TILE_SIZE)
 
 TRUCK_RIGHT = Image()

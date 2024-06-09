@@ -42,7 +42,8 @@ class Level:
         pass
 
     def update(self):
-        self.player.update()
+        self.rabbit.update()
+        self.robot.update()
 
         if self.player.entropy != self.last_player_entropy:
             self.build_image()

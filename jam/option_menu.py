@@ -3,7 +3,9 @@ from gfs.gui.button import Button
 from gfs.gui.check_box import CheckBox
 
 from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, PLAYGROUND_30, MOTO_MANGUCODE_50, render_font
-from gfs.pallet import IVORY, DARKBLUE, DARKGREY
+from gfs.pallet import IVORY, DARKBLUE, DARKGREY, GREEN, LIGHTGREEN
+
+from gfs.images import BACKGROUND_IMAGE_FULL
 
 from jam.states import MAIN_MENU
 
@@ -43,10 +45,10 @@ class OptionMenu:
 
         self.interface = Interface()
 
-        self.game_name = render_font(PLAYGROUND_100, "Expand", DARKBLUE)
+        self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
 
         # Go to main menu button centered at the bottom
-        main_menu_button = Button(PLAYGROUND_30, "Go to main menu", (0, 0), self.main_menu)
+        main_menu_button = Button(PLAYGROUND_30, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
         main_menu_button.pos = ((width - main_menu_button.normal_image.get_width()) // 2,
                                 height - main_menu_button.normal_image.get_height() * 2)
 
@@ -54,7 +56,7 @@ class OptionMenu:
 
         # Enable ambient music checkbox
         self.ambient_music = CheckBox(PLAYGROUND_30, "Enable ambient music", (0, 0), enable_ambient_music,
-                                      disable_ambient_music)
+                                      disable_ambient_music, GREEN, LIGHTGREEN)
         self.ambient_music.pos = ((width - self.ambient_music.normal_image.get_width()) // 2,
                                   height - self.ambient_music.normal_image.get_height() * 4)
 
@@ -64,7 +66,7 @@ class OptionMenu:
 
         # Enable sound effects checkbox
         self.sound_effects = CheckBox(PLAYGROUND_30, "Enable sound effects", (0, 0), enable_sound_effects,
-                                      disable_sound_effects)
+                                      disable_sound_effects, GREEN, LIGHTGREEN)
         self.sound_effects.pos = ((width - self.sound_effects.normal_image.get_width()) // 2,
                                   height - self.sound_effects.normal_image.get_height() * 6)
 
@@ -74,14 +76,14 @@ class OptionMenu:
 
         # Now render the mapping of the keyboard actions
 
-        self.keyboard_up = render_font(MOTO_MANGUCODE_50, "↑", DARKGREY)
-        self.keyboard_down = render_font(MOTO_MANGUCODE_50, "↓", DARKGREY)
-        self.keyboard_left = render_font(MOTO_MANGUCODE_50, "←", DARKGREY)
-        self.keyboard_right = render_font(MOTO_MANGUCODE_50, "→", DARKGREY)
+        self.keyboard_up = render_font(MOTO_MANGUCODE_50, "↑", LIGHTGREEN)
+        self.keyboard_down = render_font(MOTO_MANGUCODE_50, "↓", LIGHTGREEN)
+        self.keyboard_left = render_font(MOTO_MANGUCODE_50, "←", LIGHTGREEN)
+        self.keyboard_right = render_font(MOTO_MANGUCODE_50, "→", LIGHTGREEN)
 
         # keyboard to swap between players
 
-        self.keyboard_swap = render_font(PLAYGROUND_30, "Space to switch players", DARKGREY)
+        self.keyboard_swap = render_font(PLAYGROUND_30, "Space to switch players", GREEN)
 
     def main_menu(self):
         self.next_state = MAIN_MENU
@@ -104,7 +106,7 @@ class OptionMenu:
             self.music.stop()
 
     def render(self, surface):
-        surface.fill(IVORY)
+        surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
         self.interface.render(surface)
 
         # center the game name : middle, but first third height

@@ -121,8 +121,8 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
-        # grid.load_from_json("assets/levels/level_6.json")
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]), 1, 1)
+        grid.load_from_json("assets/levels/level_6.json")
 
         self.levels.append(Level(grid))
 

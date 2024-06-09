@@ -1,7 +1,7 @@
 from gfs.gui.interface import Interface
 from gfs.gui.button import Button
 
-from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, render_font
+from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 from gfs.pallet import IVORY, DARKBLUE, GREEN, LIGHTGREEN
 
 from jam.states import IN_GAME, MAIN_MENU
@@ -36,6 +36,10 @@ class SelectLevelMenu:
 
         self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
 
+        #explanations
+        self.go_to = render_font(PLAYGROUND_20, "Move the rabbit to a level", GREEN)
+        self.select = render_font(PLAYGROUND_20, "Press enter to play", GREEN)
+
         main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
@@ -44,6 +48,7 @@ class SelectLevelMenu:
         main_menu_button.pos = (x, y)
 
         self.interface.add_gui(main_menu_button)
+
 
         self.levels = []
         self.current_level = None
@@ -103,7 +108,18 @@ class SelectLevelMenu:
 
     def render(self, surface):
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
+        surface.draw_rect(GREEN, pygame.Rect(60-1,60-1,40+self.go_to.get_width()+2, 40+self.go_to.get_height()+2))
+        surface.draw_rect(LIGHTGREEN, pygame.Rect(60,60,40+self.go_to.get_width(), 40+self.go_to.get_height()))
+        surface.draw_image(self.go_to,80,80)
+        
         self.interface.render(surface)
+
+        pos = self.levels[0].rabbit.grid_pos
+        points = self.levels[0].grid.get_points(pos[0], pos[1])
+        if points > 0:
+            surface.draw_rect(GREEN, pygame.Rect(60+(self.go_to.get_width()-self.select.get_width())/2-1,140-1,40+self.select.get_width()+2, 40+self.select.get_height()+2))
+            surface.draw_rect(LIGHTGREEN, pygame.Rect(60+(self.go_to.get_width()-self.select.get_width())/2,140,40+self.select.get_width(), 40+self.select.get_height()))
+            surface.draw_image(self.select,80+(self.go_to.get_width()-self.select.get_width())/2,160)
 
         if self.current_level is not None:
             current_level = self.levels[self.current_level]

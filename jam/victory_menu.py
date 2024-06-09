@@ -16,7 +16,7 @@ class VictoryMenu:
 
         self.game_name = render_font(PLAYGROUND_100, "You won!", GREEN)
 
-        game_button = Button(PLAYGROUND_50, "Select a level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
+        game_button = Button(PLAYGROUND_50, "Next Level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
 
         x = (width - game_button.normal_image.get_width()) // 2
         y = height // 3 - game_button.normal_image.get_height() // 2
@@ -35,7 +35,7 @@ class VictoryMenu:
         self.interface.add_gui(main_menu_button)
 
     def select_level(self):
-        self.next_state = LEVEL_SELECTION
+        self.next_state = IN_GAME
 
     def main_menu(self):
         self.next_state = MAIN_MENU

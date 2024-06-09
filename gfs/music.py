@@ -15,10 +15,7 @@ class Music:
 
     def update(self):
         if not self.channel.get_busy():
-            sound = pygame.mixer.Sound(self.background_music)
-            sound.set_volume(2)
-
-            self.channel.play(sound)
+            self.channel.play(self.background_music)
 
     def stop(self):
         self.channel.stop()

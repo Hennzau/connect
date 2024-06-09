@@ -32,11 +32,13 @@ class Level:
         self.sprites.add_sprite("robot", self.robot.sprite)
 
         self.victory = False
+        self.change_character=False
 
     def keyboard_input(self, event):
         self.player.keyboard_input(event)
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            self.change_character=True
             if self.player == self.rabbit:
                 self.player = self.robot
             else:

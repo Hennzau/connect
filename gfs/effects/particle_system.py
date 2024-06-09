@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 
-from gfs.effects.particles import RED_POINT_5
+from gfs.effects.particles import RED_POINT_5, WHITE_POINT_3, YELLOW_POINT_3, WHITE_POINT_1
 
 
 class ParticleSystem:
@@ -54,3 +54,20 @@ class ParticleSystem:
                 surface.blits(
                     [(RED_POINT_5.py_image, particle.position) for particle in self.particles[motif] if
                      particle.lifetime > 0])
+                
+            if motif == "WHITE_POINT_3":
+                surface.blits(
+                    [(WHITE_POINT_3.py_image, particle.position) for particle in self.particles[motif] if
+                     particle.lifetime > 0])
+                
+            if motif == "YELLOW_POINT_3":
+                surface.blits(
+                    [(YELLOW_POINT_3.py_image, particle.position) for particle in self.particles[motif] if
+                     particle.lifetime > 0])
+
+            if motif == "WHITE_POINT_1":
+                surface.blits(
+                    [(WHITE_POINT_1.py_image, particle.position) for particle in self.particles[motif] if
+                     particle.lifetime > 0])
+                
+

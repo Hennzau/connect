@@ -81,3 +81,11 @@ TRUCK_UP.resize(4 * TILE_SIZE, TILE_SIZE)
 TRUCK_DOWN = Image()
 TRUCK_DOWN.load_from_file("assets/images/camion_bas.png")
 TRUCK_DOWN.resize(4 * TILE_SIZE, TILE_SIZE)
+
+IDLE_SINGLE= Image()
+IDLE_SINGLE.load_from_file("assets/images/rabbit_single.png")
+IDLE_SINGLE.resize(2*TILE_SIZE,2*TILE_SIZE)
+
+TRUCK_SINGLE= Image()
+TRUCK_SINGLE.load_from_file("assets/images/camion_single.png")
+TRUCK_SINGLE.resize(TILE_SIZE,TILE_SIZE)

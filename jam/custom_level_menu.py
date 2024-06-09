@@ -78,6 +78,7 @@ class CustomLevelMenu:
                 points = self.levels[0].grid.get_points(pos[0], pos[1])
                 if points > 0:
                     game.editor_check_box.activate = True
+                    game.editor.activate=True
                     game.select_level_button.activate = False
                     game.select_custom_button.activate = True
                     game.current_level = points + 6

@@ -54,7 +54,7 @@ class Rabbit:
     def move_up(self):
         if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[
                                                                                                 1] - 1) and not self.grid.get_tile(
-                self.grid_pos[0], self.grid_pos[1] - 1) == TILE_WATER:
+            self.grid_pos[0], self.grid_pos[1] - 1) == TILE_WATER:
             self.grid_pos[1] -= 1
         elif self.grid_pos[1] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
                                                                             self.grid_pos[
@@ -85,7 +85,7 @@ class Rabbit:
     def move_left(self):
         if self.grid_pos[0] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0] - 1,
                                                                           self.grid_pos[1]) and not self.grid.get_tile(
-                self.grid_pos[0] - 1, self.grid_pos[1]) == TILE_WATER:
+            self.grid_pos[0] - 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] -= 1
         elif self.grid_pos[0] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] - 1,
                                                                             self.grid_pos[

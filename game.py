@@ -22,7 +22,7 @@ class Game:
             VictoryMenu(width, height),
             DefeatMenu(width, height),
             SelectLevelMenu(width, height),
-            CustomLevelMenu(width,height)
+            CustomLevelMenu(width, height)
         ]
 
         self.current_state = MAIN_MENU

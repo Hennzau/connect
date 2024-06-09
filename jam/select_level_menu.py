@@ -79,7 +79,7 @@ class SelectLevelMenu:
                     game.current_level = points
                     self.next_state = IN_GAME
                     self.music.stop()
-                    game.editor_check_box.activate = False
+                    game.editor_check_box.activate = True
                     game.select_level_button.activate = True
                     game.select_custom_button.activate = False
 

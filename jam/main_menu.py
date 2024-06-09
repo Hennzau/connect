@@ -33,12 +33,12 @@ class MainMenu:
         self.interface.add_gui(game_button)
 
         custom_button = Button(PLAYGROUND_50, "Create a level", (0, 0), self.custom_level, GREEN, LIGHTGREEN)
-        
+
         x = (width - custom_button.normal_image.get_width()) // 2
         y = height // 3 - custom_button.normal_image.get_height() // 2
-        
+
         custom_button.pos = (x, y + self.game_name.get_height() * 2.7)
-        
+
         self.interface.add_gui(custom_button)
 
         option_button = Button(PLAYGROUND_50, "Go to options", (0, 0), self.option_menu, GREEN, LIGHTGREEN)

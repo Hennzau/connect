@@ -45,32 +45,37 @@ class CheckBox:
 
         self.rect.move(self.pos[0], self.pos[1])
 
+        self.activate = True
+
     def keyboard_input(self, event):
         pass
 
     def mouse_input(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):
-                self.check = not self.check
+        if self.activate:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.rect.collidepoint(event.pos):
+                    self.check = not self.check
 
-                if self.check:
-                    self.check_function()
-                    HUD.play()
-                else:
-                    self.uncheck_function()
-                    HUD.play()
+                    if self.check:
+                        self.check_function()
+                        HUD.play()
+                    else:
+                        self.uncheck_function()
+                        HUD.play()
 
     def mouse_motion(self, event):
-        if self.over != self.rect.collidepoint(event.pos):
-            HUD.play()
-            self.over = self.rect.collidepoint(event.pos)
+        if self.activate:
+            if self.over != self.rect.collidepoint(event.pos):
+                HUD.play()
+                self.over = self.rect.collidepoint(event.pos)
 
     def update(self):
         self.rect = pygame.Rect(self.pos[0] + self.text.get_width() + self.text.get_height() // 2, self.pos[1],
                                 self.text.get_height(), self.text.get_height())
 
     def render(self, surface):
-        if self.over or self.check:
-            surface.draw_image(self.over_image, self.pos[0], self.pos[1])
-        else:
-            surface.draw_image(self.normal_image, self.pos[0], self.pos[1])
+        if self.activate:
+            if self.over or self.check:
+                surface.draw_image(self.over_image, self.pos[0], self.pos[1])
+            else:
+                surface.draw_image(self.normal_image, self.pos[0], self.pos[1])

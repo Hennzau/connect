@@ -64,10 +64,10 @@ class InGame:
         self.interface.add_gui(reload_button)
 
         # check box
-        editor_check_box = CheckBox(PLAYGROUND_30, "Editor Enabled/Disabled", (0, 20), self.editor.activate,
-                                    self.editor.deactivate, GREEN, LIGHTGREEN)
+        self.editor_check_box = CheckBox(PLAYGROUND_30, "Editor Enabled/Disabled", (0, 20), self.editor.activate,
+                                         self.editor.deactivate, GREEN, LIGHTGREEN)
 
-        self.interface.add_gui(editor_check_box)
+        self.interface.add_gui(self.editor_check_box)
 
         self.levels = []
         self.current_level = None
@@ -215,7 +215,10 @@ class InGame:
             self.editor.has_to_export_level = False
             json = self.levels[self.current_level].grid.save_to_json()
 
-            file_name = "assets/levels/level_" + str(self.current_level) + ".json"
+            if self.current_level <= 6:
+                file_name = "assets/levels/level_" + str(self.current_level) + ".json"
+            else:
+                file_name = "assets/custom/custom_" + str(self.current_level - 7) + ".json"
 
             with open(file_name, "w") as file:
                 file.write(json)

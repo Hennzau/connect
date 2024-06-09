@@ -79,6 +79,7 @@ class SelectLevelMenu:
                     game.current_level = points
                     self.next_state = IN_GAME
                     self.music.stop()
+                    game.editor_check_box.activate = False
 
     def mouse_input(self, event):
         self.interface.mouse_input(event)

@@ -19,7 +19,6 @@ def main():
         for event in events():
             if event.type == pygame.QUIT:
                 is_running = False
-
             elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                 game.keyboard_input(event)
             elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:

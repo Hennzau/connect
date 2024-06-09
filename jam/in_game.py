@@ -8,7 +8,7 @@ from gfs.gui.check_box import CheckBox
 from gfs.effects.particle_system import ParticleSystem
 from gfs.effects.point_particle import PointParticle
 
-from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30
+from gfs.fonts import PLAYGROUND_50, PLAYGROUND_30, PLAYGROUND_20, render_font
 from gfs.pallet import DARKBLUE, RED, IVORY, GREEN, LIGHTGREEN
 from gfs.images import SELECTOR_IMAGE, JUMPING_RIGHT, BACKGROUND_IMAGE_FULL
 
@@ -264,6 +264,31 @@ class InGame:
 
     def render(self, surface):
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
+
+        if self.current_level==1:
+            text_1=render_font(PLAYGROUND_20, "Press directional keys move", GREEN)
+            text_2=render_font(PLAYGROUND_20, "Press space key to change character", GREEN)
+            text_3=render_font(PLAYGROUND_20, "How do we connect the machines", GREEN)
+            text_4=render_font(PLAYGROUND_20, "without disconnecting the living?", GREEN)
+            text_5=render_font(PLAYGROUND_20, "We must find a way for them to", GREEN)
+            text_6=render_font(PLAYGROUND_20, "cohabit.", GREEN)
+            text_7=render_font(PLAYGROUND_20, "Connect the forests together", GREEN)
+            text_8=render_font(PLAYGROUND_20, "and the houses together!", GREEN)
+            surface.draw_rect(GREEN,pygame.Rect(10-1,70-1,text_4.get_width()+20+2,190+2))
+            surface.draw_rect(GREEN,pygame.Rect(790-1,70-1,text_2.get_width()+20+2,70+2))
+            surface.draw_rect(LIGHTGREEN,pygame.Rect(10,70,text_4.get_width()+20,190))
+            surface.draw_rect(LIGHTGREEN,pygame.Rect(790,70,text_2.get_width()+20,70))
+            surface.draw_image(text_1,800,80)
+            surface.draw_image(text_2,800,110)
+            surface.draw_image(text_3,20,80)
+            surface.draw_image(text_4,20,110)
+            surface.draw_image(text_5,20,140)
+            surface.draw_image(text_6,20,170)
+            surface.draw_image(text_7,20,200)
+            surface.draw_image(text_8,20,230)
+            
+            
+            
 
         if self.current_level is not None:
             current_level = self.levels[self.current_level]

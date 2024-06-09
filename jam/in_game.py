@@ -318,6 +318,8 @@ class InGame:
 
                         level.victory = False
                         level.reload()
+                        if self.current_level < 6 or (6 < self.current_level < 12):
+                            self.current_level += 1
                         self.next_state = VICTORY_MENU
 
             if self.editor.active:

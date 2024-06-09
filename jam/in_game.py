@@ -116,6 +116,42 @@ class InGame:
 
         self.levels.append(Level(grid))
 
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_1.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_2.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_2.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_3.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_4.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_5.json")
+
+        self.levels.append(Level(grid))
+
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]))
+        grid.load_from_json("assets/custom/custom_6.json")
+
+        self.levels.append(Level(grid))
+
+
         self.victory_timer = 0.0
         self.defeat_timer = 0.0
 

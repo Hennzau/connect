@@ -78,8 +78,8 @@ class CustomLevelMenu:
                 pos = self.levels[0].robot.grid_pos
                 points = self.levels[0].grid.get_points(pos[0], pos[1])
                 if points > 0:
-                    game.current_level = points
                     game.editor_check_box.activate = True
+                    game.current_level = points + 6
                     self.next_state = IN_GAME
                     self.music.stop()
 

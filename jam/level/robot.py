@@ -14,8 +14,6 @@ from gfs.sounds import PICKUP
 
 class Robot:
     def __init__(self, grid):
-        self.image = Image(TILE_SIZE, TILE_SIZE)
-        self.image.fill(RED)
         self.grid = grid
 
         self.power = 5

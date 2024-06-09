@@ -16,7 +16,7 @@ from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
 
 from jam.states import MAIN_MENU
-from jam.states import DEFEAT_MENU, VICTORY_MENU, LEVEL_SELECTION
+from jam.states import DEFEAT_MENU, VICTORY_MENU, LEVEL_SELECTION, CUSTOM_LEVEL_SELECTION
 
 from gfs.effects.particle_system import ParticleSystem
 from gfs.effects.particles import RED_POINT_5
@@ -43,21 +43,31 @@ class InGame:
         self.interface = Interface()
         self.editor = Editor()
 
-        main_menu_button = Button(PLAYGROUND_50, "Select a Level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
+        self.select_level_button = Button(PLAYGROUND_50, "Select a Level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
 
-        x = (width - main_menu_button.normal_image.get_width()) // 2
-        y = height - main_menu_button.normal_image.get_height() * 2
+        x = (width - self.select_level_button.normal_image.get_width()) // 2
+        y = height - self.select_level_button.normal_image.get_height() * 2
 
-        main_menu_button.pos = (x, y)
+        self.select_level_button.pos = (x, y)
 
-        self.interface.add_gui(main_menu_button)
+        self.interface.add_gui(self.select_level_button)
+
+        self.select_custom_button = Button(PLAYGROUND_50, "Select a Level", (0, 0), self.select_custom, GREEN,
+                                           LIGHTGREEN)
+
+        x = (width - self.select_custom_button.normal_image.get_width()) // 2
+        y = height - self.select_custom_button.normal_image.get_height() * 2
+
+        self.select_custom_button.pos = (x, y)
+
+        self.interface.add_gui(self.select_custom_button)
 
         # reload level # at the right of the screen
 
         reload_button = Button(PLAYGROUND_50, "Reload Level", (0, 0), self.reload_level, GREEN, LIGHTGREEN)
 
         x = width - reload_button.normal_image.get_width() - 10
-        y = height - main_menu_button.normal_image.get_height() * 2
+        y = height - self.select_level_button.normal_image.get_height() * 2
 
         reload_button.pos = (x, y)
 
@@ -151,12 +161,17 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-
         self.victory_timer = 0.0
         self.defeat_timer = 0.0
 
     def select_level(self):
         self.next_state = LEVEL_SELECTION
+        if self.current_level is not None:
+            self.levels[self.current_level].reload()
+        self.music.stop()
+
+    def select_custom(self):
+        self.next_state = CUSTOM_LEVEL_SELECTION
         if self.current_level is not None:
             self.levels[self.current_level].reload()
         self.music.stop()
@@ -254,7 +269,7 @@ class InGame:
             if self.current_level <= 6:
                 file_name = "assets/levels/level_" + str(self.current_level) + ".json"
             else:
-                file_name = "assets/custom/custom_" + str(self.current_level - 7) + ".json"
+                file_name = "assets/custom/custom_" + str(self.current_level - 6) + ".json"
 
             with open(file_name, "w") as file:
                 file.write(json)

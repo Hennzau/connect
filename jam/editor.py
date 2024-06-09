@@ -2,7 +2,8 @@ from gfs.gui.interface import Interface
 from gfs.gui.check_box import CheckBox
 from gfs.gui.button import Button
 
-from gfs.fonts import PLAYGROUND_30
+from gfs.fonts import PLAYGROUND_30, render_font
+from gfs.pallet import DARKGREY
 from jam.level.tiles import TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT, POINT_STONE, POINT_TREE
 
 
@@ -45,7 +46,7 @@ class Editor:
 
         self.interface.add_gui(self.tree_check_box)
 
-        self.export_button = Button(PLAYGROUND_30, "Export Level to JSON", (900, 200), self.export_level)
+        self.export_button = Button(PLAYGROUND_30, "Save Level to Disk", (900, 200), self.export_level)
         self.has_to_export_level = False
 
         self.interface.add_gui(self.export_button)
@@ -59,6 +60,10 @@ class Editor:
                                              self.set_none_start)
 
         self.interface.add_gui(self.robot_start_checkbox)
+
+        # text to indicate that left click if for placing and right click is for removing
+
+        self.place_text = render_font(PLAYGROUND_30, "Left click to place, right click to remove", DARKGREY)
 
     def activate(self):
         self.active = True
@@ -195,6 +200,8 @@ class Editor:
     def render(self, surface):
         if self.active:
             self.interface.render(surface)
+
+            surface.draw_image(self.place_text, 600, 50)
 
     def keyboard_input(self, event):
         if self.active:

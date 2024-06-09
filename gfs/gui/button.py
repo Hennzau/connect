@@ -8,6 +8,7 @@ from gfs.pallet import IVORY, DARKBLUE, DARKGREY, VOLKSWAGEN_TAUPE
 
 from gfs.sounds import HUD
 
+
 class Button:
     def __init__(self, font, text, pos, function, normal_color=DARKGREY, over_color=DARKBLUE):
         self.text = text
@@ -30,26 +31,31 @@ class Button:
         self.normal_image = Image(self.rect.width, self.rect.height)
         self.normal_image.draw_image(self.normal_text, 0, 0)
 
+        self.activate = True
+
     def keyboard_input(self, event):
         pass
 
     def mouse_input(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):
-                self.function()
-                HUD.play()
+        if self.activate:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.rect.collidepoint(event.pos):
+                    self.function()
+                    HUD.play()
 
     def mouse_motion(self, event):
-        if self.over != self.rect.collidepoint(event.pos):
-            HUD.play()
-            self.over = self.rect.collidepoint(event.pos)
+        if self.activate:
+            if self.over != self.rect.collidepoint(event.pos):
+                HUD.play()
+                self.over = self.rect.collidepoint(event.pos)
 
     def update(self):
         self.rect = self.normal_text.get_rect()
         self.rect = self.rect.move(self.pos[0], self.pos[1])
 
     def render(self, surface):
-        if self.over:
-            surface.draw_image(self.over_image, self.pos[0], self.pos[1])
-        else:
-            surface.draw_image(self.normal_image, self.pos[0], self.pos[1])
+        if self.activate:
+            if self.over:
+                surface.draw_image(self.over_image, self.pos[0], self.pos[1])
+            else:
+                surface.draw_image(self.normal_image, self.pos[0], self.pos[1])

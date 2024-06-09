@@ -25,7 +25,7 @@ class VictoryMenu:
 
         self.interface.add_gui(game_button)
 
-        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
+        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
         y = height - main_menu_button.normal_image.get_height() * 2

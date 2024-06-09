@@ -72,17 +72,17 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid = Grid(6, 6, np.array([0, 0]), np.array([5, 5]), 3, 2)
         grid.load_from_json("assets/levels/level_1.json")
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid = Grid(10, 10, np.array([0, 0]), np.array([5, 5]), 5, 7)
         grid.load_from_json("assets/levels/level_2.json")
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
+        grid = Grid(5, 5, np.array([0, 0]), np.array([3, 1]), 10, 5)
         grid.load_from_json("assets/levels/level_3.json")
 
         self.levels.append(Level(grid))
@@ -104,6 +104,8 @@ class InGame:
 
     def main_menu(self):
         self.next_state = MAIN_MENU
+        if self.current_level is not None:
+            self.levels[self.current_level].reload()
         self.music.stop()
 
     def keyboard_input(self, event):
@@ -196,21 +198,22 @@ class InGame:
             level = self.levels[self.current_level]
             level.update()
 
-            if level.victory:
-                level.victory = False
-                level.reload()
-                self.next_state = VICTORY_MENU
-                self.music.play_short(VICTORY_SOUND)
+            if not self.editor.active:
+                if level.grid.get_tile(level.rabbit.grid_pos[0], level.rabbit.grid_pos[1]) != level.rabbit.type:
+                    level.reload()
+                    self.next_state = DEFEAT_MENU
+                    self.music.play_short(DEFEAT_SOUND)
 
-            if level.grid.get_tile(level.rabbit.grid_pos[0], level.rabbit.grid_pos[1]) != level.rabbit.type:
-                level.reload()
-                self.next_state = DEFEAT_MENU
-                self.music.play_short(DEFEAT_SOUND)
+                if level.grid.get_tile(level.robot.grid_pos[0], level.robot.grid_pos[1]) != level.robot.type:
+                    level.reload()
+                    self.next_state = DEFEAT_MENU
+                    self.music.play_short(DEFEAT_SOUND)
 
-            if level.grid.get_tile(level.robot.grid_pos[0], level.robot.grid_pos[1]) != level.robot.type:
-                level.reload()
-                self.next_state = DEFEAT_MENU
-                self.music.play_short(DEFEAT_SOUND)
+                if level.victory:
+                    level.victory = False
+                    level.reload()
+                    self.next_state = VICTORY_MENU
+                    self.music.play_short(VICTORY_SOUND)
 
             if self.editor.active:
                 level = self.levels[self.current_level]
@@ -225,21 +228,6 @@ class InGame:
                     if self.right_click:
                         level.grid.set_tile(x, y, TILE_DIRT)
                         level.build_image()
-
-            else:
-                level = self.levels[self.current_level]
-
-                player_type = level.player.type
-                power = level.player.power
-                if self.selector_pos is not None:
-                    x = int(self.selector_pos[0])
-                    y = int(self.selector_pos[1])
-                    if self.left_click:
-                        if power > 0 and level.grid.get_tile(x, y) != player_type:
-                            level.grid.set_tile(x, y, player_type)
-                            level.build_image()
-                            level.player.power = power - 1
-                            level.player.build_image()
 
         self.editor.update()
 
@@ -280,12 +268,12 @@ class InGame:
             current_level.sprites.render(surface)
 
             # draw selector
+            if self.editor.active:
+                if self.selector_pos is not None:
+                    x = self.selector_pos[0] * TILE_SIZE + x
+                    y = self.selector_pos[1] * TILE_SIZE + y
 
-            if self.selector_pos is not None:
-                x = self.selector_pos[0] * TILE_SIZE + x
-                y = self.selector_pos[1] * TILE_SIZE + y
-
-                surface.draw_image(SELECTOR_IMAGE, x, y)
+                    surface.draw_image(SELECTOR_IMAGE, x, y)
 
         self.interface.render(surface)
 

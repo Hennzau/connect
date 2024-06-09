@@ -47,6 +47,7 @@ class Grid:
 
     def reload(self):
         if self.initial_json_file is not None:
+            print ("zoajdozajd")
             self.width = self.initial_json_file["width"]
             self.height = self.initial_json_file["height"]
             self.rabbit_start = np.array(self.initial_json_file["rabbit_start"], dtype=int).reshape(2)

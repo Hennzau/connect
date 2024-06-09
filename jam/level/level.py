@@ -69,7 +69,10 @@ class Level:
             victory_rabbit = check_victory(tile_grass_grid, victory_points)
 
             victory_points = np.array(np.where(self.grid.victory_points == POINT_STONE)).T
+            victory_points = [(x, y) for x, y in victory_points]
             victory_robot = check_victory(tile_road_grid, victory_points)
+
+            print(tile_road_grid, victory_points)
 
             if victory_rabbit and victory_robot:
                 self.victory = True

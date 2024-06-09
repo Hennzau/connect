@@ -30,12 +30,11 @@ def check_victory(grid, points):
 
     while queue:
         current = queue.pop(0)
-        if current == points[1]:
-            return True
-        for neighbor in graph[current]:
-            if neighbor not in visited:
-                queue.append(neighbor)
-                visited.add(neighbor)
+        if current in graph:
+            for neighbor in graph[current]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+                    visited.add(neighbor)
 
     # check if all points are connected
 

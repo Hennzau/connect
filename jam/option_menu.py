@@ -22,7 +22,7 @@ class OptionMenu:
 
         self.interface = Interface()
 
-        self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
+        self.game_name = render_font(PLAYGROUND_100, "Connect", GREEN)
 
         # Go to main menu button centered at the bottom
         main_menu_button = Button(PLAYGROUND_30, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)

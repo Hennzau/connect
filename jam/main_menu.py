@@ -21,7 +21,7 @@ class MainMenu:
 
         self.interface = Interface()
 
-        self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
+        self.game_name = render_font(PLAYGROUND_100, "Connect", GREEN)
 
         game_button = Button(PLAYGROUND_50, "Select a level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
 

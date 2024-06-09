@@ -41,7 +41,7 @@ class Editor:
 
         self.interface.add_gui(self.dirt_check_box)
 
-        self.stone_check_box = CheckBox(PLAYGROUND_30, "Stone Tile", (100, 500), self.switch_to_stone,
+        self.stone_check_box = CheckBox(PLAYGROUND_30, "House Tile", (100, 500), self.switch_to_stone,
                                         self.switch_to_none,GREEN)
 
         self.interface.add_gui(self.stone_check_box)
@@ -61,7 +61,7 @@ class Editor:
 
         self.interface.add_gui(self.rabbit_start_checkbox)
 
-        self.robot_start_checkbox = CheckBox(PLAYGROUND_30, "Set Robot Start", (900, 400), self.set_robot_start,
+        self.robot_start_checkbox = CheckBox(PLAYGROUND_30, "Set Truck Start", (900, 400), self.set_robot_start,
                                              self.set_none_start,GREEN)
 
         self.interface.add_gui(self.robot_start_checkbox)

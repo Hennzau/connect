@@ -12,29 +12,6 @@ from jam.states import MAIN_MENU
 from gfs.music import Music
 from gfs.sounds import OPTION_MENU_MUSIC
 
-PLAY_SOUND = True
-PLAY_MUSIC = True
-
-
-def enable_ambient_music():
-    global PLAY_MUSIC
-    PLAY_MUSIC = True
-
-
-def disable_ambient_music():
-    global PLAY_MUSIC
-    PLAY_MUSIC = False
-
-
-def enable_sound_effects():
-    global PLAY_SOUND
-    PLAY_SOUND = True
-
-
-def disable_sound_effects():
-    global PLAY_SOUND
-    PLAY_SOUND = False
-
 
 class OptionMenu:
     def __init__(self, width, height):
@@ -55,24 +32,14 @@ class OptionMenu:
         self.interface.add_gui(main_menu_button)
 
         # Enable ambient music checkbox
-        self.ambient_music = CheckBox(PLAYGROUND_30, "Enable ambient music", (0, 0), enable_ambient_music,
-                                      disable_ambient_music, GREEN, LIGHTGREEN)
+        self.ambient_music = CheckBox(PLAYGROUND_30, "Enable ambient music", (0, 0), self.enable_ambient_music,
+                                      self.disable_ambient_music, GREEN, LIGHTGREEN)
         self.ambient_music.pos = ((width - self.ambient_music.normal_image.get_width()) // 2,
-                                  height - self.ambient_music.normal_image.get_height() * 4)
+                                  height - self.ambient_music.normal_image.get_height() * 6)
 
         self.ambient_music.check = True
 
         self.interface.add_gui(self.ambient_music)
-
-        # Enable sound effects checkbox
-        self.sound_effects = CheckBox(PLAYGROUND_30, "Enable sound effects", (0, 0), enable_sound_effects,
-                                      disable_sound_effects, GREEN, LIGHTGREEN)
-        self.sound_effects.pos = ((width - self.sound_effects.normal_image.get_width()) // 2,
-                                  height - self.sound_effects.normal_image.get_height() * 6)
-
-        self.sound_effects.check = True
-
-        self.interface.add_gui(self.sound_effects)
 
         # Now render the mapping of the keyboard actions
 
@@ -85,8 +52,16 @@ class OptionMenu:
 
         self.keyboard_swap = render_font(PLAYGROUND_30, "Space to switch players", GREEN)
 
+        self.play_music = True
+
     def main_menu(self):
         self.next_state = MAIN_MENU
+
+    def enable_ambient_music(self):
+        self.play_music = True
+
+    def disable_ambient_music(self):
+        self.play_music = False
 
     def keyboard_input(self, event):
         self.interface.keyboard_input(event)
@@ -100,7 +75,7 @@ class OptionMenu:
     def update(self):
         self.interface.update()
 
-        if PLAY_MUSIC:
+        if self.play_music:
             self.music.update()
         else:
             self.music.stop()

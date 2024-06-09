@@ -7,7 +7,7 @@ from jam.defeat_menu import DefeatMenu
 from jam.select_level_menu import SelectLevelMenu
 from jam.victory_menu import VictoryMenu
 
-from jam.states import MAIN_MENU, DEFEAT_MENU, LEVEL_SELECTION, IN_GAME
+from jam.states import MAIN_MENU, DEFEAT_MENU, LEVEL_SELECTION, IN_GAME, OPTION_MENU
 
 
 class Game:
@@ -32,7 +32,11 @@ class Game:
             self.current_state = next_state
 
     def update(self):
-        self.state[self.current_state].update()
+        if self.current_state == OPTION_MENU:
+            self.state[OPTION_MENU].update()
+        else:
+            self.state[self.current_state].update(self.state[OPTION_MENU])
+
         self.next_state()
 
     def keyboard_input(self, event):

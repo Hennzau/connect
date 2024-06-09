@@ -9,8 +9,6 @@ from jam.states import IN_GAME, MAIN_MENU
 from gfs.music import Music
 from gfs.sounds import MAIN_MENU_MUSIC
 
-from jam.option_menu import PLAY_MUSIC
-
 from gfs.images import BACKGROUND_IMAGE_FULL
 
 import pygame
@@ -94,14 +92,14 @@ class SelectLevelMenu:
         if self.current_level is not None:
             self.levels[self.current_level].mouse_motion(event)
 
-    def update(self):
+    def update(self, option_menu):
         self.interface.update()
 
         if self.current_level is not None:
             level = self.levels[self.current_level]
             level.update()
 
-        if PLAY_MUSIC:
+        if option_menu.play_music:
             self.music.update()
 
     def render(self, surface):

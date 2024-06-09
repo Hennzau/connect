@@ -16,7 +16,7 @@ from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
 
 from jam.states import MAIN_MENU
-from jam.states import DEFEAT_MENU, VICTORY_MENU
+from jam.states import DEFEAT_MENU, VICTORY_MENU, LEVEL_SELECTION
 
 from gfs.effects.particle_system import ParticleSystem
 from gfs.effects.particles import RED_POINT_5
@@ -32,8 +32,6 @@ from jam.editor import Editor
 from gfs.music import Music
 from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND, VICTORY_SOUND
 
-from jam.option_menu import PLAY_MUSIC
-
 
 class InGame:
     def __init__(self, width, height):
@@ -45,7 +43,7 @@ class InGame:
         self.interface = Interface()
         self.editor = Editor()
 
-        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
+        main_menu_button = Button(PLAYGROUND_50, "Select a Level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
         y = height - main_menu_button.normal_image.get_height() * 2
@@ -53,6 +51,17 @@ class InGame:
         main_menu_button.pos = (x, y)
 
         self.interface.add_gui(main_menu_button)
+
+        # reload level # at the right of the screen
+
+        reload_button = Button(PLAYGROUND_50, "Reload Level", (0, 0), self.reload_level, GREEN, LIGHTGREEN)
+
+        x = width - reload_button.normal_image.get_width() - 10
+        y = height - main_menu_button.normal_image.get_height() * 2
+
+        reload_button.pos = (x, y)
+
+        self.interface.add_gui(reload_button)
 
         # check box
         editor_check_box = CheckBox(PLAYGROUND_30, "Editor Enabled/Disabled", (0, 20), self.editor.activate,
@@ -103,18 +112,22 @@ class InGame:
         self.levels.append(Level(grid))
 
         grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
-        #grid.load_from_json("assets/levels/level_6.json")
+        # grid.load_from_json("assets/levels/level_6.json")
 
         self.levels.append(Level(grid))
 
         self.victory_timer = 0.0
         self.defeat_timer = 0.0
 
-    def main_menu(self):
-        self.next_state = MAIN_MENU
+    def select_level(self):
+        self.next_state = LEVEL_SELECTION
         if self.current_level is not None:
             self.levels[self.current_level].reload()
         self.music.stop()
+
+    def reload_level(self):
+        if self.current_level is not None:
+            self.levels[self.current_level].reload()
 
     def keyboard_input(self, event):
         self.interface.keyboard_input(event)
@@ -191,11 +204,11 @@ class InGame:
 
         self.editor.mouse_motion(event)
 
-    def update(self):
+    def update(self, option_menu):
         self.interface.update()
         self.particle_system.update()
 
-        if PLAY_MUSIC:
+        if option_menu.play_music:
             self.music.update()
 
         if self.editor.has_to_export_level:
@@ -265,32 +278,29 @@ class InGame:
     def render(self, surface):
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
 
-        if self.current_level==1:
-            text_1=render_font(PLAYGROUND_20, "Press directional keys move.", GREEN)
-            text_2=render_font(PLAYGROUND_20, "Press space key to change character.", GREEN)
-            text_3=render_font(PLAYGROUND_20, "How do we connect the machines.", GREEN)
-            text_4=render_font(PLAYGROUND_20, "without disconnecting the living?", GREEN)
-            text_5=render_font(PLAYGROUND_20, "We must find a way for them to", GREEN)
-            text_6=render_font(PLAYGROUND_20, "cohabit.", GREEN)
-            text_7=render_font(PLAYGROUND_20, "Connect the forests together", GREEN)
-            text_8=render_font(PLAYGROUND_20, "and the houses together!", GREEN)
-            text_9=render_font(PLAYGROUND_20, "The truck can build on water.", GREEN)
-            surface.draw_rect(GREEN,pygame.Rect(10-1,70-1,text_4.get_width()+20+2,190+2))
-            surface.draw_rect(GREEN,pygame.Rect(790-1,70-1,text_2.get_width()+20+2,100+2))
-            surface.draw_rect(LIGHTGREEN,pygame.Rect(10,70,text_4.get_width()+20,190))
-            surface.draw_rect(LIGHTGREEN,pygame.Rect(790,70,text_2.get_width()+20,100))
-            surface.draw_image(text_1,800,80)
-            surface.draw_image(text_2,800,110)
-            surface.draw_image(text_9,800,140)
-            surface.draw_image(text_3,20,80)
-            surface.draw_image(text_4,20,110)
-            surface.draw_image(text_5,20,140)
-            surface.draw_image(text_6,20,170)
-            surface.draw_image(text_7,20,200)
-            surface.draw_image(text_8,20,230)
-            
-            
-            
+        if self.current_level == 1:
+            text_1 = render_font(PLAYGROUND_20, "Press directional keys move.", GREEN)
+            text_2 = render_font(PLAYGROUND_20, "Press space key to change character.", GREEN)
+            text_3 = render_font(PLAYGROUND_20, "How do we connect the machines.", GREEN)
+            text_4 = render_font(PLAYGROUND_20, "without disconnecting the living?", GREEN)
+            text_5 = render_font(PLAYGROUND_20, "We must find a way for them to", GREEN)
+            text_6 = render_font(PLAYGROUND_20, "cohabit.", GREEN)
+            text_7 = render_font(PLAYGROUND_20, "Connect the forests together", GREEN)
+            text_8 = render_font(PLAYGROUND_20, "and the houses together!", GREEN)
+            text_9 = render_font(PLAYGROUND_20, "The truck can build on water.", GREEN)
+            surface.draw_rect(GREEN, pygame.Rect(10 - 1, 70 - 1, text_4.get_width() + 20 + 2, 190 + 2))
+            surface.draw_rect(GREEN, pygame.Rect(790 - 1, 70 - 1, text_2.get_width() + 20 + 2, 100 + 2))
+            surface.draw_rect(LIGHTGREEN, pygame.Rect(10, 70, text_4.get_width() + 20, 190))
+            surface.draw_rect(LIGHTGREEN, pygame.Rect(790, 70, text_2.get_width() + 20, 100))
+            surface.draw_image(text_1, 800, 80)
+            surface.draw_image(text_2, 800, 110)
+            surface.draw_image(text_9, 800, 140)
+            surface.draw_image(text_3, 20, 80)
+            surface.draw_image(text_4, 20, 110)
+            surface.draw_image(text_5, 20, 140)
+            surface.draw_image(text_6, 20, 170)
+            surface.draw_image(text_7, 20, 200)
+            surface.draw_image(text_8, 20, 230)
 
         if self.current_level is not None:
             current_level = self.levels[self.current_level]

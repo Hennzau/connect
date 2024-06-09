@@ -11,8 +11,6 @@ from jam.states import IN_GAME, OPTION_MENU, LEVEL_SELECTION
 from gfs.music import Music
 from gfs.sounds import MAIN_MENU_MUSIC
 
-from jam.option_menu import PLAY_MUSIC
-
 
 class MainMenu:
     def __init__(self, width, height):
@@ -58,10 +56,10 @@ class MainMenu:
     def mouse_motion(self, event):
         self.interface.mouse_motion(event)
 
-    def update(self):
+    def update(self, option_menu):
         self.interface.update()
 
-        if PLAY_MUSIC:
+        if option_menu.play_music:
             self.music.update()
 
     def render(self, surface):

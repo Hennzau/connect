@@ -49,7 +49,7 @@ class VictoryMenu:
     def mouse_motion(self, event):
         self.interface.mouse_motion(event)
 
-    def update(self):
+    def update(self, option_menu):
         self.interface.update()
 
     def render(self, surface):

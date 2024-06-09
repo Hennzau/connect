@@ -106,7 +106,7 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-        grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]), 10, 10)
+        grid = Grid(7, 10, np.array([0, 0]), np.array([5, 5]), 2, 3)
         grid.load_from_json("assets/levels/level_5.json")
 
         self.levels.append(Level(grid))
@@ -214,7 +214,14 @@ class InGame:
         if self.editor.has_to_export_level:
             self.editor.has_to_export_level = False
             json = self.levels[self.current_level].grid.save_to_json()
-            print(json)
+
+            file_name = "assets/levels/level_" + str(self.current_level) + ".json"
+
+            with open(file_name, "w") as file:
+                file.write(json)
+
+            self.levels[self.current_level].grid.load_from_json(file_name)
+            self.levels[self.current_level].reload()
 
         if self.current_level is not None:
             level = self.levels[self.current_level]

@@ -13,7 +13,7 @@ from gfs.sprites import Sprites
 from gfs.sprite import AnimatedSprite
 
 from jam.states import MAIN_MENU
-from jam.states import DEFEAT_MENU
+from jam.states import DEFEAT_MENU, VICTORY_MENU
 
 from gfs.effects.particle_system import ParticleSystem
 from gfs.effects.point_particle import PointParticle
@@ -27,7 +27,7 @@ from jam.level.tiles import TILE_SIZE, TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_D
 from jam.editor import Editor
 
 from gfs.music import Music
-from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND
+from gfs.sounds import IN_GAME_MUSIC, DEFEAT_SOUND, VICTORY_SOUND
 
 from jam.option_menu import PLAY_MUSIC
 
@@ -102,7 +102,6 @@ class InGame:
 
         self.levels.append(Level(grid))
 
-
     def main_menu(self):
         self.next_state = MAIN_MENU
         self.music.stop()
@@ -146,7 +145,7 @@ class InGame:
                     if self.right_click:
                         current_points = int(level.grid.get_points(x, y))
                         point_type = level.grid.get_victory_points(x, y)
-                        if current_points == 1:
+                        if current_points <= 1:
                             level.grid.set_points(x, y, 0, 0)
                             level.build_image()
                         else:
@@ -196,6 +195,12 @@ class InGame:
         if self.current_level is not None:
             level = self.levels[self.current_level]
             level.update()
+
+            if level.victory:
+                level.victory = False
+                level.reload()
+                self.next_state = VICTORY_MENU
+                self.music.play_short(VICTORY_SOUND)
 
             if level.grid.get_tile(level.rabbit.grid_pos[0], level.rabbit.grid_pos[1]) != level.rabbit.type:
                 level.reload()

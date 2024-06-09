@@ -22,7 +22,7 @@ class Robot:
     def __init__(self, grid):
         self.grid = grid
 
-        self.power = 5
+        self.power = grid.robot_power
         self.power_image = render_font(PLAYGROUND_20, str(int(self.power)), IVORY)
 
         self.grid_pos = grid.robot_start
@@ -42,7 +42,7 @@ class Robot:
         self.sprite.animate("right")
 
         self.type = TILE_ROAD
-        self.level0=False
+        self.level0 = False
 
         self.up = False
         self.down = False
@@ -169,13 +169,14 @@ class Robot:
         else:
             self.velocity = (self.grid_pos - self.render_pos) * 15
 
-        if self.level0==False:
-            if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(self.grid_pos[0], self.grid_pos[1]) == POINT_STONE:
+        if self.level0 == False:
+            if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(
+                    self.grid_pos[0], self.grid_pos[1]) == POINT_STONE:
                 self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
                 self.build_image()
                 self.grid.set_points_to_zero(self.grid_pos[0], self.grid_pos[1])
                 self.entropy += 1
                 PICKUP.play()
 
-        if self.level0==True:
-            self.power=0
+        if self.level0 == True:
+            self.power = 0

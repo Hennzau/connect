@@ -5,6 +5,7 @@ from jam.in_game import InGame
 from jam.option_menu import OptionMenu
 from jam.defeat_menu import DefeatMenu
 from jam.select_level_menu import SelectLevelMenu
+from jam.victory_menu import VictoryMenu
 
 from jam.states import MAIN_MENU, DEFEAT_MENU, LEVEL_SELECTION, IN_GAME
 
@@ -17,7 +18,7 @@ class Game:
             MainMenu(width, height),
             OptionMenu(width, height),
             InGame(width, height),
-            None,
+            VictoryMenu(width, height),
             DefeatMenu(width, height),
             SelectLevelMenu(width, height)
         ]

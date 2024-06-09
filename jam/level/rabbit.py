@@ -17,7 +17,7 @@ class Rabbit:
     def __init__(self, grid):
         self.grid = grid
 
-        self.power = 5
+        self.power = grid.rabbit_power
         self.power_image = render_font(PLAYGROUND_20, str(int(self.power)), IVORY)
 
         self.grid_pos = grid.rabbit_start

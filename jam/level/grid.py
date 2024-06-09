@@ -5,12 +5,15 @@ from jam.level.tiles import TILE_GRASS, TILE_ROAD, TILE_WATER, TILE_DIRT, POINT_
 
 
 class Grid:
-    def __init__(self, width, height, rabbit_start, robot_start):
+    def __init__(self, width, height, rabbit_start, robot_start, rabbit_power=0, robot_power=0):
         self.width = width
         self.height = height
 
         self.rabbit_start = rabbit_start
         self.robot_start = robot_start
+
+        self.rabbit_power = rabbit_power
+        self.robot_power = robot_power
 
         self.tiles = np.zeros((width, height), dtype=int)
         self.tiles.fill(TILE_DIRT)
@@ -51,7 +54,8 @@ class Grid:
 
             self.tiles = np.array(self.initial_json_file["tiles"], dtype=int).reshape((self.width, self.height))
             self.points = np.array(self.initial_json_file["points"], dtype=int).reshape((self.width, self.height))
-            self.victory_points = np.array(self.initial_json_file["victory_points"], dtype=int).reshape((self.width, self.height))
+            self.victory_points = np.array(self.initial_json_file["victory_points"], dtype=int).reshape(
+                (self.width, self.height))
 
     def load_from_json(self, json_file_name):
         json_file = open(json_file_name)
@@ -70,7 +74,8 @@ class Grid:
 
     def save_to_json(self):
         dic_json_file = {"width": self.width, "height": self.height, "rabbit_start": self.rabbit_start.tolist(),
-                         "robot_start": self.robot_start.tolist(), "tiles": self.tiles.tolist(),
+                         "robot_start": self.robot_start.tolist(),
+                         "tiles": self.tiles.tolist(),
                          "points": self.points.tolist(), "victory_points": self.victory_points.tolist()}
 
         json_file = json.dumps(dic_json_file)

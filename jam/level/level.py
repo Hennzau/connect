@@ -10,6 +10,10 @@ from jam.level.rabbit import Rabbit
 from jam.level.robot import Robot
 from gfs.images import GRASS_IMAGE, DIRT_IMAGE, ROAD_IMAGE, WATER_IMAGE, TREE_IMAGE, STONE_IMAGE
 
+import numpy as np
+
+from jam.victory_check import check_victory
+
 
 class Level:
     def __init__(self, grid):
@@ -26,6 +30,8 @@ class Level:
         self.sprites = Sprites()
         self.sprites.add_sprite("rabbit", self.rabbit.sprite)
         self.sprites.add_sprite("robot", self.robot.sprite)
+
+        self.victory = False
 
     def keyboard_input(self, event):
         self.player.keyboard_input(event)
@@ -48,7 +54,25 @@ class Level:
 
         if self.player.entropy != self.last_player_entropy:
             self.build_image()
-            self.last_player_entropy = self.rabbit.entropy
+            self.last_player_entropy = self.player.entropy
+
+            # check if victory
+
+            tile_grass_grid = np.array(self.grid.tiles == TILE_GRASS, dtype=int)
+            tile_road_grid = np.array(self.grid.tiles == TILE_ROAD, dtype=int)
+
+            victory_points = np.array(np.where(self.grid.victory_points == POINT_TREE)).T
+
+            # transform it to a list of duets
+
+            victory_points = [(x, y) for x, y in victory_points]
+            victory_rabbit = check_victory(tile_grass_grid, victory_points)
+
+            victory_points = np.array(np.where(self.grid.victory_points == POINT_STONE)).T
+            victory_robot = check_victory(tile_road_grid, victory_points)
+
+            if victory_rabbit and victory_robot:
+                self.victory = True
 
         self.sprites.update()
 

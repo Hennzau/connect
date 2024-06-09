@@ -65,3 +65,19 @@ TREE_IMAGE.resize(TILE_SIZE, TILE_SIZE)
 STONE_IMAGE = Image()
 STONE_IMAGE.load_from_file("assets/images/stone.png")
 STONE_IMAGE.resize(TILE_SIZE, TILE_SIZE)
+
+TRUCK_RIGHT = Image()
+TRUCK_RIGHT.load_from_file("assets/images/camion_droite.png")
+TRUCK_RIGHT.resize(4 * TILE_SIZE, TILE_SIZE)
+
+TRUCK_LEFT = Image()
+TRUCK_LEFT.load_from_file("assets/images/camion_gauche.png")
+TRUCK_LEFT.resize(4 * TILE_SIZE, TILE_SIZE)
+
+TRUCK_UP = Image()
+TRUCK_UP.load_from_file("assets/images/camion_haut.png")
+TRUCK_UP.resize(4 * TILE_SIZE, TILE_SIZE)
+
+TRUCK_DOWN = Image()
+TRUCK_DOWN.load_from_file("assets/images/camion_bas.png")
+TRUCK_DOWN.resize(4 * TILE_SIZE, TILE_SIZE)

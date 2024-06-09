@@ -240,6 +240,9 @@ class InGame:
             current_level.rabbit.sprite.rect.x = x + current_level.rabbit.render_pos[0] * TILE_SIZE - TILE_SIZE // 2
             current_level.rabbit.sprite.rect.y = y + current_level.rabbit.render_pos[1] * TILE_SIZE - TILE_SIZE // 2
 
+            current_level.robot.sprite.rect.x = x + current_level.robot.render_pos[0] * TILE_SIZE
+            current_level.robot.sprite.rect.y = y + current_level.robot.render_pos[1] * TILE_SIZE
+
             current_level.sprites.render(surface)
 
             # draw selector

@@ -4,19 +4,19 @@ from gfs.gui.button import Button
 from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, render_font
 from gfs.pallet import IVORY, DARKBLUE, GREEN, LIGHTGREEN
 
-from jam.states import IN_GAME, MAIN_MENU
+from jam.states import IN_GAME, MAIN_MENU, LEVEL_SELECTION
 
 
-class DefeatMenu:
+class VictoryMenu:
     def __init__(self, width, height):
         self.surface_configuration = (width, height)
         self.next_state = None
 
         self.interface = Interface()
 
-        self.game_name = render_font(PLAYGROUND_100, "You lost", GREEN)
+        self.game_name = render_font(PLAYGROUND_100, "You won!", GREEN)
 
-        game_button = Button(PLAYGROUND_50, "Try Again", (0, 0), self.in_game, GREEN, LIGHTGREEN)
+        game_button = Button(PLAYGROUND_50, "Select a level", (0, 0), self.select_level, GREEN, LIGHTGREEN)
 
         x = (width - game_button.normal_image.get_width()) // 2
         y = height // 3 - game_button.normal_image.get_height() // 2
@@ -25,7 +25,7 @@ class DefeatMenu:
 
         self.interface.add_gui(game_button)
 
-        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
+        main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
         y = height - main_menu_button.normal_image.get_height() * 2
@@ -34,8 +34,8 @@ class DefeatMenu:
 
         self.interface.add_gui(main_menu_button)
 
-    def in_game(self):
-        self.next_state = IN_GAME
+    def select_level(self):
+        self.next_state = LEVEL_SELECTION
 
     def main_menu(self):
         self.next_state = MAIN_MENU

@@ -11,6 +11,12 @@ from jam.level.grid import Grid
 
 from gfs.sounds import PICKUP
 
+from gfs.images import TRUCK_RIGHT, TRUCK_LEFT, TRUCK_UP, TRUCK_DOWN
+
+from gfs.sprite import AnimatedSprite
+
+from gfs.sounds import BUNNY
+
 
 class Robot:
     def __init__(self, grid):
@@ -26,13 +32,33 @@ class Robot:
 
         self.entropy = 0
 
+        self.sprite = AnimatedSprite(0, 0, TILE_SIZE, TILE_SIZE, {
+            "right": (4, TRUCK_RIGHT),
+            "left": (4, TRUCK_LEFT),
+            "up": (4, TRUCK_UP),
+            "down": (4, TRUCK_DOWN),
+        }, 4)
+
+        self.sprite.animate("right")
+
         self.type = TILE_ROAD
 
+        self.up = False
+        self.down = False
+        self.left = False
+        self.right = False
+
+        self.timer = 0.0
+
     def move_up(self):
-        if self.grid_pos[1] - 1 >= 0 and TILE_ROAD == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1) and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
+        if self.grid_pos[1] - 1 >= 0 and TILE_ROAD == self.grid.get_tile(self.grid_pos[0], self.grid_pos[
+                                                                                               1] - 1) and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] - 1) == TILE_WATER:
             self.grid_pos[1] -= 1
         elif self.grid_pos[1] - 1 >= 0 and TILE_ROAD != self.grid.get_tile(self.grid_pos[0],
-                                                                           self.grid_pos[1] - 1) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
+                                                                           self.grid_pos[
+                                                                               1] - 1) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] - 1) == TILE_WATER:
             self.grid_pos[1] -= 1
             self.power -= 1
             self.build_image()
@@ -41,11 +67,14 @@ class Robot:
 
     def move_down(self):
         if self.grid_pos[1] + 1 < self.grid.height and TILE_ROAD == self.grid.get_tile(self.grid_pos[0],
-                                                                                       self.grid_pos[1] + 1) and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1)==TILE_WATER:
+                                                                                       self.grid_pos[
+                                                                                           1] + 1) and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] + 1) == TILE_WATER:
             self.grid_pos[1] += 1
         elif self.grid_pos[1] + 1 < self.grid.height and TILE_ROAD != self.grid.get_tile(self.grid_pos[0],
                                                                                          self.grid_pos[
-                                                                                             1] + 1) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1)==TILE_WATER:
+                                                                                             1] + 1) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] + 1) == TILE_WATER:
             self.grid_pos[1] += 1
             self.power -= 1
             self.build_image()
@@ -53,10 +82,14 @@ class Robot:
             self.entropy += 1
 
     def move_left(self):
-        if self.grid_pos[0] - 1 >= 0 and TILE_ROAD == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]) and not self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1])==TILE_WATER:
+        if self.grid_pos[0] - 1 >= 0 and TILE_ROAD == self.grid.get_tile(self.grid_pos[0] - 1,
+                                                                         self.grid_pos[1]) and not self.grid.get_tile(
+            self.grid_pos[0] - 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] -= 1
         elif self.grid_pos[0] - 1 >= 0 and TILE_ROAD != self.grid.get_tile(self.grid_pos[0] - 1,
-                                                                           self.grid_pos[1]) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1])==TILE_WATER:
+                                                                           self.grid_pos[
+                                                                               1]) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0] - 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] -= 1
             self.power -= 1
             self.build_image()
@@ -65,11 +98,13 @@ class Robot:
 
     def move_right(self):
         if self.grid_pos[0] + 1 < self.grid.width and TILE_ROAD == self.grid.get_tile(
-                self.grid_pos[0] + 1, self.grid_pos[1]) and not self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1])==TILE_WATER:
+                self.grid_pos[0] + 1, self.grid_pos[1]) and not self.grid.get_tile(self.grid_pos[0] + 1,
+                                                                                   self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] += 1
         elif self.grid_pos[0] + 1 < self.grid.width and TILE_ROAD != self.grid.get_tile(self.grid_pos[0] + 1,
                                                                                         self.grid_pos[
-                                                                                            1]) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1])==TILE_WATER:
+                                                                                            1]) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0] + 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] += 1
             self.power -= 1
             self.build_image()
@@ -79,18 +114,52 @@ class Robot:
     def keyboard_input(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                self.move_up()
+                self.up = True
+                BUNNY.play()
             elif event.key == pygame.K_DOWN:
-                self.move_down()
+                self.down = True
+                BUNNY.play()
             elif event.key == pygame.K_LEFT:
-                self.move_left()
+                self.left = True
+                BUNNY.play()
             elif event.key == pygame.K_RIGHT:
-                self.move_right()
+                self.right = True
+                BUNNY.play()
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP:
+                self.up = False
+            elif event.key == pygame.K_DOWN:
+                self.down = False
+            elif event.key == pygame.K_LEFT:
+                self.left = False
+            elif event.key == pygame.K_RIGHT:
+                self.right = False
 
     def build_image(self):
         self.power_image = render_font(PLAYGROUND_20, str(int(self.power)), IVORY)
 
     def update(self):
+        if self.up and self.timer < 0.016:
+            self.move_up()
+            self.sprite.animate("up")
+        if self.down and self.timer < 0.016:
+            self.move_down()
+            self.sprite.animate("down")
+        if self.left and self.timer < 0.016:
+            self.move_left()
+            self.sprite.animate("left")
+        if self.right and self.timer < 0.016:
+            self.move_right()
+            self.sprite.animate("right")
+
+        if self.up or self.down or self.left or self.right:
+            self.timer += 1 / 60
+        else:
+            self.timer = 0.0
+
+        if self.timer >= 0.1:
+            self.timer = 0.0
+
         self.render_pos += self.velocity * (1 / 60)
 
         if np.linalg.norm(self.grid_pos - self.render_pos) < 0.05:
@@ -99,7 +168,8 @@ class Robot:
         else:
             self.velocity = (self.grid_pos - self.render_pos) * 15
 
-        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(self.grid_pos[0], self.grid_pos[1]) == POINT_STONE:
+        if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(
+                self.grid_pos[0], self.grid_pos[1]) == POINT_STONE:
             self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
             self.build_image()
             self.grid.set_points_to_zero(self.grid_pos[0], self.grid_pos[1])

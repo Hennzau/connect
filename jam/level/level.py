@@ -25,6 +25,7 @@ class Level:
         self.last_player_entropy = 0
         self.sprites = Sprites()
         self.sprites.add_sprite("rabbit", self.rabbit.sprite)
+        self.sprites.add_sprite("robot", self.robot.sprite)
 
     def keyboard_input(self, event):
         self.player.keyboard_input(event)
@@ -63,6 +64,7 @@ class Level:
         self.last_player_entropy = 0
         self.sprites = Sprites()
         self.sprites.add_sprite("rabbit", self.rabbit.sprite)
+        self.sprites.add_sprite("robot", self.robot.sprite)
 
     def build_image(self):
         for i in range(self.grid.width):

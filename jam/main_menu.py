@@ -6,7 +6,7 @@ from gfs.images import BACKGROUND_IMAGE_FULL
 from gfs.fonts import PLAYGROUND_100, PLAYGROUND_50, render_font
 from gfs.pallet import IVORY, DARKBLUE, GREEN, DARKGREY, LIGHTGREEN
 
-from jam.states import IN_GAME, OPTION_MENU, LEVEL_SELECTION
+from jam.states import IN_GAME, OPTION_MENU, LEVEL_SELECTION, CUSTOM_LEVEL_SELECTION
 
 from gfs.music import Music
 from gfs.sounds import MAIN_MENU_MUSIC
@@ -32,17 +32,29 @@ class MainMenu:
 
         self.interface.add_gui(game_button)
 
+        custom_button = Button(PLAYGROUND_50, "Create a level", (0, 0), self.custom_level, GREEN, LIGHTGREEN)
+        
+        x = (width - custom_button.normal_image.get_width()) // 2
+        y = height // 3 - custom_button.normal_image.get_height() // 2
+        
+        custom_button.pos = (x, y + self.game_name.get_height() * 2.7)
+        
+        self.interface.add_gui(custom_button)
+
         option_button = Button(PLAYGROUND_50, "Go to options", (0, 0), self.option_menu, GREEN, LIGHTGREEN)
 
         x = (width - option_button.normal_image.get_width()) // 2
         y = height // 3 - option_button.normal_image.get_height() // 2
 
-        option_button.pos = (x, y + self.game_name.get_height() * 2.7)
+        option_button.pos = (x, y + self.game_name.get_height() * 3.4)
 
         self.interface.add_gui(option_button)
 
     def select_level(self):
         self.next_state = LEVEL_SELECTION
+
+    def custom_level(self):
+        self.next_state = CUSTOM_LEVEL_SELECTION
 
     def option_menu(self):
         self.next_state = OPTION_MENU

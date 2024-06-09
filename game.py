@@ -6,8 +6,9 @@ from jam.option_menu import OptionMenu
 from jam.defeat_menu import DefeatMenu
 from jam.select_level_menu import SelectLevelMenu
 from jam.victory_menu import VictoryMenu
+from jam.custom_level_menu import CustomLevelMenu
 
-from jam.states import MAIN_MENU, DEFEAT_MENU, LEVEL_SELECTION, IN_GAME, OPTION_MENU
+from jam.states import MAIN_MENU, DEFEAT_MENU, LEVEL_SELECTION, IN_GAME, OPTION_MENU, CUSTOM_LEVEL_SELECTION
 
 
 class Game:
@@ -20,7 +21,8 @@ class Game:
             InGame(width, height),
             VictoryMenu(width, height),
             DefeatMenu(width, height),
-            SelectLevelMenu(width, height)
+            SelectLevelMenu(width, height),
+            CustomLevelMenu(width,height)
         ]
 
         self.current_state = MAIN_MENU
@@ -43,6 +45,8 @@ class Game:
 
         if self.current_state == LEVEL_SELECTION:
             self.state[LEVEL_SELECTION].keyboard_input(event, self.state[IN_GAME])
+        elif self.current_state == CUSTOM_LEVEL_SELECTION:
+            self.state[CUSTOM_LEVEL_SELECTION].keyboard_input(event, self.state[IN_GAME])
         else:
             self.state[self.current_state].keyboard_input(event)
 

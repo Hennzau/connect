@@ -17,7 +17,6 @@ import pygame
 
 from jam.level.grid import Grid
 
-
 from jam.level.level import Level
 from jam.level.grid import Grid
 from jam.level.rabbit import Rabbit
@@ -37,8 +36,6 @@ class SelectLevelMenu:
 
         self.game_name = render_font(PLAYGROUND_100, "Expand", GREEN)
 
-       
-
         main_menu_button = Button(PLAYGROUND_50, "Go to main menu", (0, 0), self.main_menu, GREEN, LIGHTGREEN)
 
         x = (width - main_menu_button.normal_image.get_width()) // 2
@@ -51,18 +48,16 @@ class SelectLevelMenu:
         self.levels = []
         self.current_level = None
 
-
         # tests
 
         grid = Grid(15, 15, np.array([0, 0]), np.array([5, 5]))
         grid.load_from_json("assets/levels/level_0.json")
 
         self.levels.append(Level(grid))
-        self.levels[0].rabbit.level0=True
-        self.levels[0].robot.level0=True
+        self.levels[0].rabbit.level0 = True
+        self.levels[0].robot.level0 = True
 
         self.current_level = 0
-
 
     def in_game(self):
         self.next_state = IN_GAME
@@ -79,12 +74,11 @@ class SelectLevelMenu:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                pos=self.levels[0].rabbit.grid_pos
-                points=self.levels[0].grid.get_points(pos[0],pos[1])
-                if points>0:
+                pos = self.levels[0].rabbit.grid_pos
+                points = self.levels[0].grid.get_points(pos[0], pos[1])
+                if points > 0:
                     game.current_level = points
-                    self.next_state=IN_GAME
-
+                    self.next_state = IN_GAME
 
     def mouse_input(self, event):
         self.interface.mouse_input(event)
@@ -92,12 +86,10 @@ class SelectLevelMenu:
         if self.current_level is not None:
             self.levels[self.current_level].mouse_input(event)
 
-
     def mouse_motion(self, event):
         self.interface.mouse_motion(event)
         if self.current_level is not None:
             self.levels[self.current_level].mouse_motion(event)
-
 
     def update(self):
         self.interface.update()
@@ -112,7 +104,6 @@ class SelectLevelMenu:
     def render(self, surface):
         surface.draw_image(BACKGROUND_IMAGE_FULL, 0, 0)
         self.interface.render(surface)
-
 
         if self.current_level is not None:
             current_level = self.levels[self.current_level]
@@ -129,5 +120,7 @@ class SelectLevelMenu:
 
             current_level.rabbit.sprite.rect.x = x + current_level.rabbit.render_pos[0] * TILE_SIZE - TILE_SIZE // 2
             current_level.rabbit.sprite.rect.y = y + current_level.rabbit.render_pos[1] * TILE_SIZE - TILE_SIZE // 2
+
+            current_level.robot.sprite.rect.x = -200
 
             current_level.sprites.render(surface)

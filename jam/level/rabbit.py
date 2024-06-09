@@ -28,8 +28,7 @@ class Rabbit:
         self.entropy = 0
 
         self.type = TILE_GRASS
-        self.level0=False
-
+        self.level0 = False
 
         self.sprite = AnimatedSprite(0, 0, TILE_SIZE, TILE_SIZE, {
             "jump_right": (4, JUMPING_RIGHT),
@@ -53,10 +52,14 @@ class Rabbit:
         # dans rabbit créer un bool Level0 ou pas : si Level0, on consomme pas les points, on a 0 power
 
     def move_up(self):
-        if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1) and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
+        if self.grid_pos[1] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0], self.grid_pos[
+                                                                                                1] - 1) and not self.grid.get_tile(
+                self.grid_pos[0], self.grid_pos[1] - 1) == TILE_WATER:
             self.grid_pos[1] -= 1
         elif self.grid_pos[1] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
-                                                                            self.grid_pos[1] - 1) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] - 1)==TILE_WATER:
+                                                                            self.grid_pos[
+                                                                                1] - 1) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] - 1) == TILE_WATER:
             self.grid_pos[1] -= 1
             self.power -= 1
             self.build_image()
@@ -65,11 +68,14 @@ class Rabbit:
 
     def move_down(self):
         if self.grid_pos[1] + 1 < self.grid.height and TILE_GRASS == self.grid.get_tile(self.grid_pos[0],
-                                                                                        self.grid_pos[1] + 1)and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1)==TILE_WATER:
+                                                                                        self.grid_pos[
+                                                                                            1] + 1) and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] + 1) == TILE_WATER:
             self.grid_pos[1] += 1
         elif self.grid_pos[1] + 1 < self.grid.height and TILE_GRASS != self.grid.get_tile(self.grid_pos[0],
                                                                                           self.grid_pos[
-                                                                                              1] + 1) and self.power > 0 and not self.grid.get_tile(self.grid_pos[0], self.grid_pos[1] + 1)==TILE_WATER:
+                                                                                              1] + 1) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0], self.grid_pos[1] + 1) == TILE_WATER:
             self.grid_pos[1] += 1
             self.power -= 1
             self.build_image()
@@ -77,10 +83,14 @@ class Rabbit:
             self.entropy += 1
 
     def move_left(self):
-        if self.grid_pos[0] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0] - 1, self.grid_pos[1]) and not self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1])==TILE_WATER:
+        if self.grid_pos[0] - 1 >= 0 and TILE_GRASS == self.grid.get_tile(self.grid_pos[0] - 1,
+                                                                          self.grid_pos[1]) and not self.grid.get_tile(
+                self.grid_pos[0] - 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] -= 1
         elif self.grid_pos[0] - 1 >= 0 and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] - 1,
-                                                                            self.grid_pos[1]) and self.power > 0and not self.grid.get_tile(self.grid_pos[0]-1, self.grid_pos[1])==TILE_WATER:
+                                                                            self.grid_pos[
+                                                                                1]) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0] - 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] -= 1
             self.power -= 1
             self.build_image()
@@ -89,11 +99,13 @@ class Rabbit:
 
     def move_right(self):
         if self.grid_pos[0] + 1 < self.grid.width and TILE_GRASS == self.grid.get_tile(
-                self.grid_pos[0] + 1, self.grid_pos[1])and not self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1])==TILE_WATER:
+                self.grid_pos[0] + 1, self.grid_pos[1]) and not self.grid.get_tile(self.grid_pos[0] + 1,
+                                                                                   self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] += 1
         elif self.grid_pos[0] + 1 < self.grid.width and TILE_GRASS != self.grid.get_tile(self.grid_pos[0] + 1,
                                                                                          self.grid_pos[
-                                                                                             1]) and self.power > 0and not self.grid.get_tile(self.grid_pos[0]+1, self.grid_pos[1])==TILE_WATER:
+                                                                                             1]) and self.power > 0 and not self.grid.get_tile(
+            self.grid_pos[0] + 1, self.grid_pos[1]) == TILE_WATER:
             self.grid_pos[0] += 1
             self.power -= 1
             self.build_image()
@@ -157,7 +169,7 @@ class Rabbit:
         else:
             self.velocity = (self.grid_pos - self.render_pos) * 15
 
-        if self.level0==False :
+        if self.level0 == False:
             if self.grid.get_points(self.grid_pos[0], self.grid_pos[1]) > 0 and self.grid.get_victory_points(
                     self.grid_pos[0], self.grid_pos[1]) == POINT_TREE:
                 self.power += self.grid.get_points(self.grid_pos[0], self.grid_pos[1])
@@ -166,5 +178,5 @@ class Rabbit:
                 self.entropy += 1
                 PICKUP.play()
 
-        if self.level0==True :
-            self.power=0
+        if self.level0 == True:
+            self.power = 0
